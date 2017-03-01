@@ -1,0 +1,4 @@
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\ClassLib\bin\Debug\ClassLib.dll
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\ClassLib\bin\Debug\ClassLib.pdb
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\ClassLib\obj\Debug\ClassLib.dll
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\ClassLib\obj\Debug\ClassLib.pdb
