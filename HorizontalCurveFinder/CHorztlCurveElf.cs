@@ -36,7 +36,7 @@ namespace HorizontalCurveFinder
             if (m_pMap == null)
                 return;
               
-            DlgCurveFinderQuery dlg = new DlgCurveFinderQuery();
+            FormUI.DlgCurveFinderQuery dlg = new FormUI.DlgCurveFinderQuery();
             dlg.theMap = m_pMap;
             dlg.theApp = m_pApp;
             dlg.theMxDoc = m_pMxDocument;
@@ -46,7 +46,7 @@ namespace HorizontalCurveFinder
 
         protected override void OnUpdate()
         {
-            Enabled = ArcMap.Application != null;
+            this.Enabled = ArcMap.Application != null;
         }
 
 
@@ -65,7 +65,7 @@ namespace HorizontalCurveFinder
             {
                 return null;
             }
-            IMxDocument mxDocument = ((IMxDocument)(application.Document)); // Explicit Cast
+            IMxDocument mxDocument = (IMxDocument)application.Document; // Explicit Cast
             IActiveView activeView = mxDocument.ActiveView;
             IMap map = activeView.FocusMap;
 

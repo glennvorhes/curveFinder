@@ -16,7 +16,7 @@ namespace FormUI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new HorizontalCurveFinder.DlgCurveFinderQuery());
+            Application.Run(new DlgCurveFinderQuery());
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace HorizontalCurveFinder
+﻿namespace FormUI
 {
     partial class DlgCurveFinderQuery
     {

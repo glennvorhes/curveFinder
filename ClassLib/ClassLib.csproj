@@ -94,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CsvExport.cs" />
+    <Compile Include="CurveAlgo.cs" />
     <Compile Include="curves\ClosedLine.cs" />
     <Compile Include="curves\HorizontalCurve.cs" />
     <Compile Include="curves\StraightLine.cs" />
