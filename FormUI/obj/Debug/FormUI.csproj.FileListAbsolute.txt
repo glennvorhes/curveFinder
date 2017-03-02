@@ -1,11 +1,12 @@
-C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\FormUI\obj\Debug\FormUI.csprojResolveAssemblyReference.cache
-C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\FormUI\obj\Debug\FormUI.Properties.Resources.resources
-C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\FormUI\obj\Debug\FormUI.csproj.GenerateResource.Cache
 C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\FormUI\bin\Debug\FormUI.exe.config
 C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\FormUI\bin\Debug\FormUI.exe
 C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\FormUI\bin\Debug\FormUI.pdb
 C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\FormUI\bin\Debug\ClassLib.dll
 C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\FormUI\bin\Debug\ClassLib.pdb
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\FormUI\obj\Debug\FormUI.csprojResolveAssemblyReference.cache
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\FormUI\obj\Debug\FormUI.DlgCurveFinderQuery.resources
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\FormUI\obj\Debug\FormUI.Form1.resources
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\FormUI\obj\Debug\FormUI.Properties.Resources.resources
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\FormUI\obj\Debug\FormUI.csproj.GenerateResource.Cache
 C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\FormUI\obj\Debug\FormUI.exe
 C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\FormUI\obj\Debug\FormUI.pdb
-C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\FormUI\obj\Debug\FormUI.DlgCurveFinderQuery.resources

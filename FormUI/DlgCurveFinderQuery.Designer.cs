@@ -43,6 +43,7 @@
             this.ColAngle = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cbFeet = new System.Windows.Forms.CheckBox();
             this.cbDisslv = new System.Windows.Forms.CheckBox();
             this.rIDField = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -66,7 +67,6 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.NUDMaxAngleVariationInATangent = new System.Windows.Forms.NumericUpDown();
-            this.cbFeet = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -97,7 +97,6 @@
             this.cbLayers.Name = "cbLayers";
             this.cbLayers.Size = new System.Drawing.Size(617, 21);
             this.cbLayers.TabIndex = 1;
-            this.cbLayers.SelectedIndexChanged += new System.EventHandler(this.cbLayers_SelectedIndexChanged);
             // 
             // btIdentify
             // 
@@ -215,7 +214,16 @@
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Query";
-            this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
+            // 
+            // cbFeet
+            // 
+            this.cbFeet.AutoSize = true;
+            this.cbFeet.Location = new System.Drawing.Point(136, 100);
+            this.cbFeet.Name = "cbFeet";
+            this.cbFeet.Size = new System.Drawing.Size(103, 17);
+            this.cbFeet.TabIndex = 18;
+            this.cbFeet.Text = "Map Unit is Feet";
+            this.cbFeet.UseVisualStyleBackColor = true;
             // 
             // cbDisslv
             // 
@@ -226,7 +234,6 @@
             this.cbDisslv.TabIndex = 7;
             this.cbDisslv.Text = "Dissolved   Roads";
             this.cbDisslv.UseVisualStyleBackColor = true;
-            this.cbDisslv.CheckedChanged += new System.EventHandler(this.cbDisslv_CheckedChanged);
             // 
             // rIDField
             // 
@@ -236,7 +243,6 @@
             this.rIDField.Name = "rIDField";
             this.rIDField.Size = new System.Drawing.Size(254, 21);
             this.rIDField.TabIndex = 17;
-            this.rIDField.SelectedIndexChanged += new System.EventHandler(this.rnField_SelectedIndexChanged);
             this.rIDField.Click += new System.EventHandler(this.rIDField_Click);
             // 
             // label10
@@ -530,24 +536,12 @@
             0,
             0,
             0});
-            this.NUDMaxAngleVariationInATangent.ValueChanged += new System.EventHandler(this.NUDMaxAngleVariationInATangent_ValueChanged);
-            // 
-            // cbFeet
-            // 
-            this.cbFeet.AutoSize = true;
-            this.cbFeet.Location = new System.Drawing.Point(136, 100);
-            this.cbFeet.Name = "cbFeet";
-            this.cbFeet.Size = new System.Drawing.Size(103, 17);
-            this.cbFeet.TabIndex = 18;
-            this.cbFeet.Text = "Map Unit is Feet";
-            this.cbFeet.UseVisualStyleBackColor = true;
-            this.cbFeet.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // DlgCurveFinderQuery
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(758, 231);
+            this.ClientSize = new System.Drawing.Size(745, 240);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;

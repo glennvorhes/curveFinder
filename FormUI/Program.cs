@@ -14,9 +14,10 @@ namespace FormUI
         [STAThread]
         static void Main()
         {
+            ClassLib.LicenseInit.InitializeLicence();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new DlgCurveFinderQuery());
+            Application.Run(new Form1());
         }
     }
 }

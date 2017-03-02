@@ -3,3 +3,5 @@ C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General
 C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\UnitTestProject1\obj\Debug\UnitTestProject1.csprojResolveAssemblyReference.cache
 C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\UnitTestProject1\obj\Debug\UnitTestProject1.dll
 C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\UnitTestProject1\obj\Debug\UnitTestProject1.pdb
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\UnitTestProject1\bin\Debug\ClassLib.dll
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\UnitTestProject1\bin\Debug\ClassLib.pdb
