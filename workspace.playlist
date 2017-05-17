@@ -1,0 +1,1 @@
+<Playlist Version="1.0"><Add Test="UnitTestProject1.UnitTestWorkspace.getFeatureClassShp" /><Add Test="UnitTestProject1.UnitTestWorkspace.getFeatureClassGdbFd" /><Add Test="UnitTestProject1.UnitTestWorkspace.getFeatureClassGdb" /></Playlist>
