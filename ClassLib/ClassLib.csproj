@@ -49,7 +49,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <RegisterForComInterop>true</RegisterForComInterop>
+    <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ESRI.ArcGIS.ArcMapUI, Version=10.2.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
@@ -111,6 +111,7 @@
     <Compile Include="curves\StraightLine.cs" />
     <Compile Include="curves\CurveCollection.cs" />
     <Compile Include="enums.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="IdentifyCurves.cs" />
     <Compile Include="LicenseInit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

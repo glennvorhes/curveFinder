@@ -15,7 +15,7 @@ namespace ClassLib
         private static ESRI.ArcGIS.Geodatabase.IWorkspaceFactory2 shapeWsf = (ESRI.ArcGIS.Geodatabase.IWorkspaceFactory2)new ESRI.ArcGIS.DataSourcesFile.ShapefileWorkspaceFactory();
         private static ESRI.ArcGIS.Geodatabase.IWorkspaceFactory2 gdbWsf = (ESRI.ArcGIS.Geodatabase.IWorkspaceFactory2)new ESRI.ArcGIS.DataSourcesGDB.FileGDBWorkspaceFactory();
 
-        private static IFields GetCurveAreaFields(bool isShape, bool isDissolved, ESRI.ArcGIS.Geometry.ISpatialReference georef)
+        private static IFields GetCurveAreaFields(bool isShape, bool isDissolved, ESRI.ArcGIS.Geometry.ISpatialReference georef = null)
         {
 
             IFields fields = new FieldsClass();
@@ -63,7 +63,10 @@ namespace ClassLib
             }
             geometryDefEdit.HasM_2 = false;
             geometryDefEdit.HasZ_2 = false;
-            geometryDefEdit.SpatialReference_2 = georef;
+            if (georef != null)
+            {
+                geometryDefEdit.SpatialReference_2 = georef;
+            }
             // Set standard field properties
             fieldEdit.Name_2 = "SHAPE";
             fieldEdit.Type_2 = esriFieldType.esriFieldTypeGeometry;
@@ -190,7 +193,7 @@ namespace ClassLib
                 // Create INTSC_ANGLE Field
                 fieldUserDefined = new Field();
                 fieldEdit = (IFieldEdit)fieldUserDefined;
-                fieldEdit.Name_2 = "INTSC_ANGLE";
+                fieldEdit.Name_2 = "INTSC_ANGL";
                 //fieldEdit.AliasName_2 = "Central Angle of the curve area";
                 fieldEdit.Editable_2 = true;
                 fieldEdit.IsNullable_2 = false;
@@ -394,7 +397,7 @@ namespace ClassLib
                 // Create INTSC_ANGLE Field
                 fieldUserDefined = new Field();
                 fieldEdit = (IFieldEdit)fieldUserDefined;
-                fieldEdit.Name_2 = "INTSC_ANGLE";
+                fieldEdit.Name_2 = "INTSC_ANGL";
                 //fieldEdit.AliasName_2 = "Central Angle of the curve area";
                 fieldEdit.Editable_2 = true;
                 fieldEdit.IsNullable_2 = false;
@@ -417,9 +420,6 @@ namespace ClassLib
                 string workspacePath = System.IO.Path.GetDirectoryName(fPath);
                 string featureClass = System.IO.Path.GetFileName(fPath);
                 ESRI.ArcGIS.Geodatabase.IWorkspace ws;
-                Debug.WriteLine(workspacePath);
-                Debug.WriteLine(featureClass);
-
 
                 if (fPath.EndsWith(".shp"))
                 {
@@ -470,38 +470,48 @@ namespace ClassLib
             if (ws.get_NameExists(esriDatasetType.esriDTFeatureClass, outName))
             {
                 IDataset dsExist = (IDataset)fws.OpenFeatureClass(outName);
+                ISchemaLock lck = (ISchemaLock)dsExist;
+                IEnumSchemaLockInfo lockInfoEnum;
+                lck.GetCurrentSchemaLocks(out lockInfoEnum);
+                ISchemaLockInfo lockInfo;
+                
+                while((lockInfo = lockInfoEnum.Next()) != null){
+                    Debug.WriteLine(lockInfo.SchemaLockType);
+                }
 
                 if (dsExist.CanDelete()){
-                    dsExist.Delete();
+                        dsExist.Delete();
                 } else {
                      return null;   
                 }
             }
 
-            IGeoDataset geoDs = (IGeoDataset)inputFc;
-            IFields fields = GetCurveAreaFields(outName.IndexOf(".shp") > -1, isDissolved, geoDs.SpatialReference);
+            
+            IFields fields;
             IFeatureClass fc;
 
             IFeatureDataset featDs = inputFc.FeatureDataset;
-            
 
-            if (featDs == null || featDs.BrowseName.EndsWith(".gdb"))
+            IGeoDataset geoDs = (IGeoDataset)inputFc;
+            fields = GetCurveAreaFields(outName.IndexOf(".shp") > -1, isDissolved, geoDs.SpatialReference);
+
+            try
             {
-                fc = fws.CreateFeatureClass(outName, fields, ocDesc.InstanceCLSID, ocDesc.ClassExtensionCLSID, esriFeatureType.esriFTSimple, "SHAPE", "");
+                if (featDs == null || featDs.BrowseName.EndsWith(".gdb"))
+                {
+
+                    fc = fws.CreateFeatureClass(outName, fields, ocDesc.InstanceCLSID, ocDesc.ClassExtensionCLSID, esriFeatureType.esriFTSimple, "SHAPE", "");
+                }
+                else
+                {
+                    fc = featDs.CreateFeatureClass(outName, fields, ocDesc.InstanceCLSID, ocDesc.ClassExtensionCLSID, esriFeatureType.esriFTSimple, "SHAPE", "");
+                }
             }
-            else
+            catch (System.Runtime.InteropServices.COMException)
             {
-                Debug.WriteLine(inputFc.FeatureDataset.BrowseName);
-                fc = featDs.CreateFeatureClass(outName, fields, ocDesc.InstanceCLSID, ocDesc.ClassExtensionCLSID, esriFeatureType.esriFTSimple, "SHAPE", "");
+                return null;
             }
-            Debug.WriteLine(inputFc.FeatureDataset == null);
-            //dsExist
-   
-            Debug.WriteLine("here");
-
-
-
-            
+           
             return fc;
         }
     }

@@ -17,27 +17,111 @@ namespace UnitTestProject1
         [TestMethod]
         public void AnalyzeShp()
         {
-            ESRI.ArcGIS.Geometry.ISpatialReference georef;
-            ESRI.ArcGIS.Geodatabase.IFeatureWorkspace ws;
-            ESRI.ArcGIS.Geodatabase.IFeatureClass fc = ClassLib.Workspace.getFeatureClass(@"C:\Users\glenn\Desktop\RockMM\Segments.shp");
 
-            ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(1, true);
-            curv.RunCurves(fc, "FID");
+            ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(@"C:\Users\glenn\Desktop\RockMM\Segments.shp", 1, true);
+            curv.RunCurves("FID");
         }
 
         [TestMethod]
         public void CheckFeet()
         {
-            ESRI.ArcGIS.Geometry.ISpatialReference georef;
-            ESRI.ArcGIS.Geodatabase.IFeatureWorkspace ws;
+
             ESRI.ArcGIS.Geodatabase.IFeatureClass fcMeters = ClassLib.Workspace.getFeatureClass(@"C:\Users\glenn\Desktop\RockMM\SegmentsFt.shp");
 
-            ClassLib.IdentifyCurves.isFeetFromFc(fcMeters);
+            ClassLib.Helpers.isFeetFromFc(fcMeters);
 
-            fcMeters = ClassLib.Workspace.getFeatureClass(@"C:\Users\glenn\Desktop\RockMM\Segments.shp");
-            ClassLib.IdentifyCurves.isFeetFromFc(fcMeters);
+            fcMeters = ClassLib.Workspace.getFeatureClass(@"C:\Users\glenn\Documents\TOPS\CurveFinder\Curves_2.gdb\duval\roads");
+            ClassLib.Helpers.isFeetFromFc(fcMeters);
             //ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(1, true);
             //curv.RunCurves(fc, "FID");
         }
+
+        [TestMethod]
+        public void TestGeneral()
+        {
+            string inputFC = @"C:\Users\glenn\Documents\TOPS\CurveFinder\Curves_2.gdb\duval\roads";
+            double ang = 0.7;
+            string outPath = ClassLib.IdentifyCurves.makeOutputPath(inputFC, ang);
+
+            ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(inputFC, ang, true);
+            curv.RunCurves("OBJECTID");
+            curv.MakeOutputFeatureClass(ClassLib.IdentifyCurves.makeOutputPath(inputFC, ang) + "_compare");
+        }
+
+        [TestMethod]
+        public void TestGeneral2()
+        {
+            string inputFC = @"C:\Users\glenn\Documents\TOPS\CurveFinder\Curves_2.gdb\duval\roads_smooth";
+            double ang = 0.65;
+            ClassLib.IdentifyCurves.makeOutputPath(inputFC, ang);
+           
+            ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(inputFC, ang, true);
+            curv.RunCurves("OBJECTID");
+            curv.MakeOutputFeatureClass(ClassLib.IdentifyCurves.makeOutputPath(inputFC, ang) + "_compare");
+        }
+
+
+        [TestMethod]
+        public void TestWrongField()
+        {
+            string inputFC = @"C:\Users\glenn\Documents\TOPS\CurveFinder\Curves_2.gdb\duval\roads_smooth";
+            double ang = 0.65;
+            ClassLib.IdentifyCurves.makeOutputPath(inputFC, ang);
+
+            ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(inputFC, ang, true);
+            curv.RunCurves("CATS");
+            curv.MakeOutputFeatureClass(ClassLib.IdentifyCurves.makeOutputPath(inputFC, ang) + "_compare_wrong");
+        }
+
+        [TestMethod]
+        public void TestWrongInput()
+        {
+            string inputFC = @"C:\Users\glenn\Documents\TOPS\CurveFinder\Curves_2.gdb\duval\roads_smooth_____";
+            double ang = 0.65;
+            ClassLib.IdentifyCurves.makeOutputPath(inputFC, ang);
+
+            ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(inputFC, ang, true);
+            //curv.RunCurves("CATS");
+            //curv.MakeOutputFeatureClass(ClassLib.IdentifyCurves.makeOutputPath(inputFC, ang) + "_compare_wrong");
+        }
+
+        [TestMethod]
+        public void TestWrongOutput()
+        {
+            string inputFC = @"C:\Users\glenn\Documents\TOPS\CurveFinder\Curves_2.gdb\duval\roads_smooth";
+            double ang = 0.65;
+            ClassLib.IdentifyCurves.makeOutputPath(inputFC, ang);
+
+            ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(inputFC, ang, true);
+            curv.RunCurves("OBJECTID");
+            curv.MakeOutputFeatureClass("Bad output");
+        }
+
+        [TestMethod]
+        public void TestMkShp()
+        {
+            string inputFC = @"C:\Users\glenn\Desktop\RockMM\duval.shp";
+            double ang = 0.65;
+            ClassLib.IdentifyCurves.makeOutputPath(inputFC, ang);
+
+            ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(inputFC, ang, true);
+            curv.RunCurves("FID");
+            curv.MakeOutputFeatureClass(@"C:\Users\glenn\Desktop\RockMM\duval_mk_shp.shp");
+        }
+
+        [TestMethod]
+        public void TestMkShpUndis()
+        {
+            string inputFC = @"C:\Users\glenn\Desktop\RockMM\duval.shp";
+            double ang = 0.65;
+            ClassLib.IdentifyCurves.makeOutputPath(inputFC, ang);
+
+            ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(inputFC, ang, false);
+            curv.RunCurves("FID");
+            curv.MakeOutputFeatureClass(@"C:\Users\glenn\Desktop\RockMM\duval_mk_shp_undis.shp");
+        }
     }
 }
+
+
+

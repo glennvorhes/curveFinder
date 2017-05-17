@@ -43,6 +43,8 @@
             this.ColAngle = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.txtOutput = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.cbFeet = new System.Windows.Forms.CheckBox();
             this.cbDisslv = new System.Windows.Forms.CheckBox();
             this.rIDField = new System.Windows.Forms.ComboBox();
@@ -66,7 +68,7 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
-            this.NUDMaxAngleVariationInATangent = new System.Windows.Forms.NumericUpDown();
+            this.angleSpinner = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -77,7 +79,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.NUDMaxAllowableNumOfConsecutiveCounterAngleSegmentsInACurve)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUDMinNumofSegmentsInACurve)).BeginInit();
             this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.NUDMaxAngleVariationInATangent)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.angleSpinner)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -97,6 +99,7 @@
             this.cbLayers.Name = "cbLayers";
             this.cbLayers.Size = new System.Drawing.Size(617, 21);
             this.cbLayers.TabIndex = 1;
+            this.cbLayers.SelectedIndexChanged += new System.EventHandler(this.cbLayers_SelectedIndexChanged);
             // 
             // btIdentify
             // 
@@ -197,6 +200,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.txtOutput);
+            this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Controls.Add(this.cbFeet);
             this.groupBox2.Controls.Add(this.cbDisslv);
             this.groupBox2.Controls.Add(this.rIDField);
@@ -215,8 +220,26 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Query";
             // 
+            // txtOutput
+            // 
+            this.txtOutput.Location = new System.Drawing.Point(65, 209);
+            this.txtOutput.Name = "txtOutput";
+            this.txtOutput.ReadOnly = true;
+            this.txtOutput.Size = new System.Drawing.Size(483, 20);
+            this.txtOutput.TabIndex = 20;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(16, 209);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(42, 13);
+            this.label8.TabIndex = 19;
+            this.label8.Text = "Output:";
+            // 
             // cbFeet
             // 
+            this.cbFeet.AutoCheck = false;
             this.cbFeet.AutoSize = true;
             this.cbFeet.Location = new System.Drawing.Point(136, 100);
             this.cbFeet.Name = "cbFeet";
@@ -243,6 +266,7 @@
             this.rIDField.Name = "rIDField";
             this.rIDField.Size = new System.Drawing.Size(254, 21);
             this.rIDField.TabIndex = 17;
+            this.rIDField.SelectedIndexChanged += new System.EventHandler(this.rIDField_SelectedIndexChanged);
             this.rIDField.Click += new System.EventHandler(this.rIDField_Click);
             // 
             // label10
@@ -256,6 +280,7 @@
             // 
             // btIdentifyCurveAreas
             // 
+            this.btIdentifyCurveAreas.Enabled = false;
             this.btIdentifyCurveAreas.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btIdentifyCurveAreas.Location = new System.Drawing.Point(635, 75);
             this.btIdentifyCurveAreas.Name = "btIdentifyCurveAreas";
@@ -488,7 +513,7 @@
             // 
             this.groupBox3.Controls.Add(this.label11);
             this.groupBox3.Controls.Add(this.label15);
-            this.groupBox3.Controls.Add(this.NUDMaxAngleVariationInATangent);
+            this.groupBox3.Controls.Add(this.angleSpinner);
             this.groupBox3.Location = new System.Drawing.Point(15, 135);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(704, 67);
@@ -514,34 +539,40 @@
             this.label15.TabIndex = 3;
             this.label15.Text = "degree";
             // 
-            // NUDMaxAngleVariationInATangent
+            // angleSpinner
             // 
-            this.NUDMaxAngleVariationInATangent.DecimalPlaces = 2;
-            this.NUDMaxAngleVariationInATangent.Location = new System.Drawing.Point(413, 32);
-            this.NUDMaxAngleVariationInATangent.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.NUDMaxAngleVariationInATangent.Minimum = new decimal(new int[] {
+            this.angleSpinner.DecimalPlaces = 2;
+            this.angleSpinner.Increment = new decimal(new int[] {
             1,
             0,
             0,
             65536});
-            this.NUDMaxAngleVariationInATangent.Name = "NUDMaxAngleVariationInATangent";
-            this.NUDMaxAngleVariationInATangent.Size = new System.Drawing.Size(120, 20);
-            this.NUDMaxAngleVariationInATangent.TabIndex = 4;
-            this.NUDMaxAngleVariationInATangent.Value = new decimal(new int[] {
+            this.angleSpinner.Location = new System.Drawing.Point(413, 32);
+            this.angleSpinner.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.angleSpinner.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.angleSpinner.Name = "angleSpinner";
+            this.angleSpinner.Size = new System.Drawing.Size(120, 20);
+            this.angleSpinner.TabIndex = 4;
+            this.angleSpinner.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
+            this.angleSpinner.ValueChanged += new System.EventHandler(this.angleSpinner_ValueChanged);
             // 
             // DlgCurveFinderQuery
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(745, 240);
+            this.ClientSize = new System.Drawing.Size(745, 249);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -561,7 +592,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.NUDMinNumofSegmentsInACurve)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.NUDMaxAngleVariationInATangent)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.angleSpinner)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -602,10 +633,12 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button btIdentifyCurveAreas;
-        private System.Windows.Forms.NumericUpDown NUDMaxAngleVariationInATangent;
+        private System.Windows.Forms.NumericUpDown angleSpinner;
         private System.Windows.Forms.ComboBox rIDField;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.CheckBox cbDisslv;
         private System.Windows.Forms.CheckBox cbFeet;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox txtOutput;
     }
 }

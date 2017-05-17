@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLib", "ClassLib\ClassL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{CA48B877-6453-47D7-8185-68546C76A10E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurveCommandLine", "CurveCommandLine\CurveCommandLine.csproj", "{0EA94511-894B-46BB-94FC-4BAD026B12EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{CA48B877-6453-47D7-8185-68546C76A10E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA48B877-6453-47D7-8185-68546C76A10E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA48B877-6453-47D7-8185-68546C76A10E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EA94511-894B-46BB-94FC-4BAD026B12EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EA94511-894B-46BB-94FC-4BAD026B12EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EA94511-894B-46BB-94FC-4BAD026B12EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EA94511-894B-46BB-94FC-4BAD026B12EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

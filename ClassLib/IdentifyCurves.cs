@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,9 +19,17 @@ namespace ClassLib
         private double dAngleThreshold;
         private bool isDissolved;
         private ClassLib.segment.IowaCurveCollection allCurveinthePoly;
-        private ESRI.ArcGIS.Geodatabase.IFeatureClass inFeatClass;
+        private ESRI.ArcGIS.Geodatabase.IFeatureClass _inFeatClass;
 
-        public IdentifyCurves(double nudMaxAngleVariation, bool isDissolved)
+        public ESRI.ArcGIS.Geodatabase.IFeatureClass inFeatClass
+        {
+            get{
+                return this._inFeatClass;
+                    
+            }
+        }
+
+        private IdentifyCurves(double nudMaxAngleVariation, bool isDissolved)
         {
             m_pCurrCurveAreaLayer = null;
             m_pCurrHozCurve = null;
@@ -30,8 +39,17 @@ namespace ClassLib
 
             this.dAngleThreshold = nudMaxAngleVariation;
             this.isDissolved = isDissolved;
+        }
 
-            this.inFeatClass = null;
+
+        public IdentifyCurves(string inputClassPath, double nudMaxAngleVariation, bool isDissolved): this(nudMaxAngleVariation, isDissolved)
+        {
+            this._inFeatClass = ClassLib.Workspace.getFeatureClass(inputClassPath);
+        }
+
+        public IdentifyCurves(ESRI.ArcGIS.Geodatabase.IFeatureClass inputFClass, double nudMaxAngleVariation, bool isDissolved) : this(nudMaxAngleVariation, isDissolved)
+        {
+            this._inFeatClass = inputFClass;
         }
 
         private static string parseErrors(List<string> errorList){
@@ -49,36 +67,49 @@ namespace ClassLib
 
         }
 
-        public static Boolean? isFeetFromFc(ESRI.ArcGIS.Geodatabase.IFeatureClass pFeatureClass)
-        {
-            ESRI.ArcGIS.Geodatabase.IGeoDataset geo = (ESRI.ArcGIS.Geodatabase.IGeoDataset)pFeatureClass;
-            ESRI.ArcGIS.Geometry.IProjectedCoordinateSystem proj = (ESRI.ArcGIS.Geometry.IProjectedCoordinateSystem)geo.SpatialReference;
-            if (proj.CoordinateUnit.Name.StartsWith("Meter"))
-            {
-                return false;
-            }
-            else if (proj.CoordinateUnit.Name.StartsWith("Foot"))
-            {
-                return true;
-            }
-            else
-            {
-                return null;
-            }
-
-
+        public static void showError(string msg){
+            Console.WriteLine(msg);
+            Debug.WriteLine(msg);
         }
 
-        public string RunCurves(ESRI.ArcGIS.Geodatabase.IFeatureClass pFeatureClass, string routeIdField){
+
+
+        public static string makeOutputPath(string inputFC, double angle)
+        {
+            return Helpers.makeOutputPath(inputFC, (decimal)angle);
+        }
+
+
+
+        public string RunCurves(string routeIdField){
+
+
         
-            ESRI.ArcGIS.Geodatabase.IGeoDataset geo = (ESRI.ArcGIS.Geodatabase.IGeoDataset)pFeatureClass;
+            ESRI.ArcGIS.Geodatabase.IGeoDataset geo = (ESRI.ArcGIS.Geodatabase.IGeoDataset)this.inFeatClass;
             ESRI.ArcGIS.Geometry.IProjectedCoordinateSystem proj = (ESRI.ArcGIS.Geometry.IProjectedCoordinateSystem)geo.SpatialReference;
-            System.Diagnostics.Debug.WriteLine(proj.CoordinateUnit);
 
-            bool isFeet = (bool)isFeetFromFc(pFeatureClass);
+            bool isFeet = (bool)Helpers.isFeetFromFc(this.inFeatClass);
 
-            this.inFeatClass = pFeatureClass;
             List<string> errorList = new List<string>();
+
+            ESRI.ArcGIS.Geodatabase.IField field;
+
+            bool bail = true;
+
+            for (int i = 0; i < this.inFeatClass.Fields.FieldCount; i++)
+            {
+                // Get the field at the given index.
+                if (this.inFeatClass.Fields.get_Field(i).Name == routeIdField.Trim())
+                {
+                    bail = false;
+                    break;
+                }
+            }
+
+            if (bail)
+            {
+                return "specified route id field not found in shapefile";
+            }
 
             //Set defelection angle threshold
             double dPctTSThreshold = 0.0000001; //if the deflection angle of the segment is smaller than dPctTSThreshold*the deflection angle of the previous segment, consider current segment is a transition
@@ -110,7 +141,7 @@ namespace ClassLib
             pFeature = null;
             pFilter = new ESRI.ArcGIS.Geodatabase.QueryFilterClass();
             pFilter.WhereClause = "";
-            pFeatureCursor = pFeatureClass.Search(pFilter, false);
+            pFeatureCursor = this.inFeatClass.Search(pFilter, false);
             pFeature = pFeatureCursor.NextFeature();
             //pFeature is one polyline, a polyline may contain multiple curve areas
             while (pFeature != null)
@@ -141,7 +172,8 @@ namespace ClassLib
                 ESRI.ArcGIS.Geometry.IPoint currPTTo = new ESRI.ArcGIS.Geometry.Point();
 
                 //get basic info of the feature
-                int nFieldIndex = pFeature.Fields.FindField(routeIdField);
+
+                int nFieldIndex = pFeature.Fields.FindField(routeIdField);               
                 string strTemp = pFeature.get_Value(nFieldIndex).ToString();
                 lCurrPolyLineFID = long.Parse(strTemp);//Polyline ID
 
@@ -1486,6 +1518,11 @@ namespace ClassLib
 
             ESRI.ArcGIS.Geodatabase.IFeatureClass fClass = MakeOutputFeatureClass(outputFullPath);
 
+            if (fClass == null)
+            {
+                Helpers.DebugConsoleWrite("Unable to write to output probably due to a lock");
+            }
+
             string layerName = Path.GetFileName(outputFullPath).Replace(".shp", "");
             //get feature class name
           
@@ -1500,7 +1537,13 @@ namespace ClassLib
         public ESRI.ArcGIS.Geodatabase.IFeatureClass MakeOutputFeatureClass(string outputFullPath)
         {
 
-            ESRI.ArcGIS.Geodatabase.IFeatureClass pCurveAreaFC = ClassLib.Workspace.CreateOutputFc(this.inFeatClass, Path.GetFileName(outputFullPath), this.isDissolved);
+            ESRI.ArcGIS.Geodatabase.IFeatureClass pCurveAreaFC = ClassLib.Workspace.CreateOutputFc(this._inFeatClass, Path.GetFileName(outputFullPath), this.isDissolved);
+
+            if (pCurveAreaFC == null)
+            {
+                Helpers.DebugConsoleWrite("Unable to create output probably due to a lock on an existing file with the same name");
+                return null;
+            }
 
             
             //fill in the feature class
@@ -1590,7 +1633,7 @@ namespace ClassLib
                 }
                 else
                 {
-                    feature.set_Value(nFieldIndex, pIowaCurve.Radius);
+                    feature.set_Value(nFieldIndex, Double.IsNaN(pIowaCurve.Radius) ? -1 : pIowaCurve.Radius);
                 }
 
                 nFieldIndex = pCurveAreaFC.FindField("DEGREE");
@@ -1600,7 +1643,7 @@ namespace ClassLib
                 }
                 else
                 {
-                    feature.set_Value(nFieldIndex, pIowaCurve.CentralAngle);
+                    feature.set_Value(nFieldIndex, Double.IsNaN(pIowaCurve.CentralAngle) ? -1 : pIowaCurve.CentralAngle);
                 }
 
                 nFieldIndex = pCurveAreaFC.FindField("HAS_TRANS");
@@ -1613,15 +1656,15 @@ namespace ClassLib
                     feature.set_Value(nFieldIndex, pIowaCurve.hasTransition == true ? "Yes" : "No");
                 }
 
-                //nFieldIndex = pCurveAreaFC.FindField("INTSC_ANGLE");
-                //if (pIowaCurve.Type != ClassLib.enums.CurveType.HAP)
-                //{
-                //    feature.set_Value(nFieldIndex, null);
-                //}
-                //else
-                //{
-                //    feature.set_Value(nFieldIndex, pIowaCurve.CentralAngle);
-                //}
+                nFieldIndex = pCurveAreaFC.FindField("INTSC_ANGL");
+                if (pIowaCurve.Type != ClassLib.enums.CurveType.HAP)
+                {
+                    feature.set_Value(nFieldIndex, null);
+                }
+                else
+                {
+                    feature.set_Value(nFieldIndex, Double.IsNaN(pIowaCurve.CentralAngle) ? -1 : pIowaCurve.CentralAngle);
+                }
 
                 // Commit the new feature to the geodatabase.
                 feature.Store();

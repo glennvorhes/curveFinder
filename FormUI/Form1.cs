@@ -48,11 +48,11 @@ namespace FormUI
             else
             {
                 this.txtInput.Text = nextObj.FullName;
-                this.updateOutput();
+                this.txtOutput.Text = ClassLib.Helpers.makeOutputPath(this.txtInput.Text, this.AngleVariation.Value);
 
 
                 this.fClass = ClassLib.Workspace.getFeatureClass(this.txtInput.Text);
-                Boolean? isFeet = ClassLib.IdentifyCurves.isFeetFromFc(this.fClass);
+                Boolean? isFeet = ClassLib.Helpers.isFeetFromFc(this.fClass);
 
                 if (isFeet == null)
                 {
@@ -102,45 +102,20 @@ namespace FormUI
 
             double ang = (double)this.AngleVariation.Value;
 
-            ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(ang, cbDisslv.Checked);
+            ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(this.fClass, ang, cbDisslv.Checked);
             
-            string errors = curv.RunCurves(this.fClass, this.rIDField.SelectedItem.ToString());
+            string errors = curv.RunCurves(this.rIDField.SelectedItem.ToString());
             curv.MakeOutputFeatureClass(this.txtOutput.Text);
 
             Cursor = Cursors.Default;
 
             MessageBox.Show("Curves Found");
             this.reset();
-
-
         }
 
         private void NUDMaxAngleVariationInATangent_ValueChanged(object sender, EventArgs e)
         {
-            this.updateOutput();
-        }
-
-
-        private void updateOutput()
-        {
-            string outputFile = this.txtInput.Text.Trim();
-            string angText = Math.Round(AngleVariation.Value, 1).ToString().Replace(".", "p");
-
-            if (outputFile.Length > 0)
-            {
-                if (outputFile.EndsWith(".shp"))
-                {
-                    outputFile = outputFile.Replace(".shp", "");
-                    outputFile += "_" + angText + ".shp";
-                }
-                else
-                {
-                    outputFile += "_" + angText;
-                }
-            }
-
-            this.txtOutput.Text = outputFile;
-
+            this.txtOutput.Text = ClassLib.Helpers.makeOutputPath(this.txtInput.Text, this.AngleVariation.Value);
         }
 
         private void rIDField_SelectedIndexChanged(object sender, EventArgs e)
