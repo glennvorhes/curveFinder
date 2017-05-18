@@ -23,8 +23,6 @@ namespace HorizontalCurveFinder
 
         protected override void OnClick()
         {
-
-            Debug.WriteLine("here");
             //get app and map
             m_pApp = ArcMap.Application;
             if (m_pApp == null)

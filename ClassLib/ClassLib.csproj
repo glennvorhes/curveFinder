@@ -111,6 +111,7 @@
     <Compile Include="curves\StraightLine.cs" />
     <Compile Include="curves\CurveCollection.cs" />
     <Compile Include="enums.cs" />
+    <Compile Include="Fields.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="IdentifyCurves.cs" />
     <Compile Include="LicenseInit.cs" />
