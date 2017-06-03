@@ -267,7 +267,6 @@
             this.rIDField.Size = new System.Drawing.Size(254, 21);
             this.rIDField.TabIndex = 17;
             this.rIDField.SelectedIndexChanged += new System.EventHandler(this.rIDField_SelectedIndexChanged);
-            this.rIDField.Click += new System.EventHandler(this.rIDField_Click);
             // 
             // label10
             // 

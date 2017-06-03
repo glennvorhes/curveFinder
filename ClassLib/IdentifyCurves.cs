@@ -52,20 +52,20 @@ namespace ClassLib
             this._inFeatClass = inputFClass;
         }
 
-        private static string parseErrors(List<string> errorList){
-            if (errorList.Count == 0)
-            {
-                return "";
-            }
+        //private static string parseErrors(List<string> errorList)
+        //{
+        //    if (errorList.Count == 0)
+        //    {
+        //        return "";
+        //    }
 
-            string outErrors = "";
-            foreach (string err in errorList)
-            {
-                outErrors += err + "\n";
-            }
-            return outErrors;
-
-        }
+        //    string outErrors = "";
+        //    foreach (string err in errorList)
+        //    {
+        //        outErrors += err + "\n";
+        //    }
+        //    return outErrors;
+        //}
 
         public static void showError(string msg){
             Console.WriteLine(msg);
@@ -74,14 +74,14 @@ namespace ClassLib
 
 
 
-        public static string makeOutputPath(string inputFC, double angle)
-        {
-            return Helpers.makeOutputPath(inputFC, (decimal)angle);
-        }
+        //public static string makeOutputPath(string inputFC, double angle)
+        //{
+        //    return Helpers.makeOutputPath(inputFC, angle);
+        //}
 
 
 
-        public string RunCurves(string routeIdField){
+        public List<string> RunCurves(string routeIdField){
 
 
         
@@ -91,8 +91,6 @@ namespace ClassLib
             bool isFeet = (bool)Helpers.isFeetFromFc(this.inFeatClass);
 
             List<string> errorList = new List<string>();
-
-            ESRI.ArcGIS.Geodatabase.IField field;
 
             bool bail = true;
 
@@ -108,7 +106,8 @@ namespace ClassLib
 
             if (bail)
             {
-                return "specified route id field not found in shapefile";
+                errorList.Add("specified route id field not found in shapefile");
+                return errorList;
             }
 
             //Set defelection angle threshold
@@ -176,6 +175,7 @@ namespace ClassLib
                 int nFieldIndex = pFeature.Fields.FindField(routeIdField);               
                 string strTemp = pFeature.get_Value(nFieldIndex).ToString();
                 lCurrPolyLineFID = long.Parse(strTemp);//Polyline ID
+                //TODO make it so only allowable fields are ints
 
                 nFieldIndex = pFeature.Fields.FindField(routeIdField);//Street Name
                 RouteName = pFeature.get_Value(nFieldIndex).ToString();
@@ -866,7 +866,7 @@ namespace ClassLib
                             if (pSubCurve == null)
                             {
                                 errorList.Add("Get Subcurve Failed!");
-                                return parseErrors(errorList);
+                                return errorList;
                             }
                             pCurve.m_pCurve = pSubCurve;
 
@@ -1005,7 +1005,7 @@ namespace ClassLib
                                 if (pSubCurve == null)
                                 {
                                     errorList.Add("Get Subcurve Failed!");
-                                    return parseErrors(errorList);
+                                    return errorList;
                                 }
                                 pCurve.m_pCurve = pSubCurve;
 
@@ -1090,7 +1090,7 @@ namespace ClassLib
                                 if (pSubCurve == null)
                                 {
                                     errorList.Add("Get Subcurve Failed!");
-                                    return parseErrors(errorList);
+                                    return errorList;
                                 }
                                 pCurve.m_pCurve = pSubCurve;
 
@@ -1475,7 +1475,7 @@ namespace ClassLib
                         if (pSubCurve2 == null)
                         {
                             errorList.Add("Get Subcurve Failed!");
-                            return parseErrors(errorList);
+                            return errorList;
                         }
                         pCurve.m_pCurve = pSubCurve2;
 
@@ -1508,29 +1508,8 @@ namespace ClassLib
 
             }//while all polylines
 
-            return parseErrors(errorList);
+            return errorList;
 
-        }
-
-
-        public ESRI.ArcGIS.Carto.IFeatureLayer MakeOutputLayer(string outputFullPath)
-        {
-
-            ESRI.ArcGIS.Geodatabase.IFeatureClass fClass = MakeOutputFeatureClass(outputFullPath);
-
-            if (fClass == null)
-            {
-                Helpers.DebugConsoleWrite("Unable to write to output probably due to a lock");
-            }
-
-            string layerName = Path.GetFileName(outputFullPath).Replace(".shp", "");
-            //get feature class name
-          
-
-            m_pCurrCurveAreaLayer = new ESRI.ArcGIS.Carto.FeatureLayer();
-            m_pCurrCurveAreaLayer.Name = layerName;
-            m_pCurrCurveAreaLayer.FeatureClass = fClass;
-            return m_pCurrCurveAreaLayer;
         }
 
 
@@ -1541,8 +1520,7 @@ namespace ClassLib
 
             if (pCurveAreaFC == null)
             {
-                Helpers.DebugConsoleWrite("Unable to create output probably due to a lock on an existing file with the same name");
-                return null;
+                throw new System.IO.IOException("Unable to create output probably due to a lock on an existing file with the same name");
             }
 
             

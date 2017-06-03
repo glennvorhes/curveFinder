@@ -2,7 +2,7 @@
   <Name>MIRECurveFinder</Name>
   <AddInID>{7846fd17-065c-43af-8d7c-b6e7dbd85ba8}</AddInID>
   <Description>The add-in aims at identifying the horizontal curves and computing their radius and angle for a specific layer. </Description>
-  <Version>2.5</Version>
+  <Version>2.6</Version>
   <Image>Images\HorizontalCurveFinder.png</Image>
   <Author>Richard Li</Author>
   <Company>TOPS Lab at UWisc-Madison</Company>

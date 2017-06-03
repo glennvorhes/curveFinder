@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurveCommandLine", "CurveCommandLine\CurveCommandLine.csproj", "{0EA94511-894B-46BB-94FC-4BAD026B12EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopyOutputs", "CopyOutputs\CopyOutputs.csproj", "{F669896B-D17B-4999-BF91-517AA376D8B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{0EA94511-894B-46BB-94FC-4BAD026B12EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EA94511-894B-46BB-94FC-4BAD026B12EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0EA94511-894B-46BB-94FC-4BAD026B12EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F669896B-D17B-4999-BF91-517AA376D8B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F669896B-D17B-4999-BF91-517AA376D8B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F669896B-D17B-4999-BF91-517AA376D8B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F669896B-D17B-4999-BF91-517AA376D8B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

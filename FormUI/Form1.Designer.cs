@@ -134,6 +134,11 @@
             // AngleVariation
             // 
             this.AngleVariation.DecimalPlaces = 1;
+            this.AngleVariation.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.AngleVariation.Location = new System.Drawing.Point(150, 61);
             this.AngleVariation.Maximum = new decimal(new int[] {
             10,

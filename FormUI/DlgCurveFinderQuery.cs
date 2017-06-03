@@ -52,6 +52,8 @@ namespace FormUI
         private double MaxFilterRadious;
         private double MaxFilterLengthDiff;
 
+        ClassLib.Run run = null;
+
         //properties
         public IMap theMap
         {
@@ -133,17 +135,17 @@ namespace FormUI
             }
 
             //old spin control
-            NUDMinNumofSegmentsInACurve.Value = 2;//number of segmen
-            NUDMaxAngleBetweenConsecutiveSegmentsInACurve.Value = 70;//degree
-            NUDMinAngleToStartACurve.Value = 5;//degree
-            NUDMinAngleBetweenConsecutiveSegmentsInACurve.Value = 2;//degree
-            NUDMaxAllowableCounterAngleBetweenConsecutiveSegmentsInACurve.Value = 0;//dgree
-            NUDMaxAllowableNumOfConsecutiveCounterAngleSegmentsInACurve.Value = 1;//number of segments
+            //NUDMinNumofSegmentsInACurve.Value = 2;//number of segmen
+            //NUDMaxAngleBetweenConsecutiveSegmentsInACurve.Value = 70;//degree
+            //NUDMinAngleToStartACurve.Value = 5;//degree
+            //NUDMinAngleBetweenConsecutiveSegmentsInACurve.Value = 2;//degree
+            //NUDMaxAllowableCounterAngleBetweenConsecutiveSegmentsInACurve.Value = 0;//dgree
+            //NUDMaxAllowableNumOfConsecutiveCounterAngleSegmentsInACurve.Value = 1;//number of segments
 
             //new spin control
             angleSpinner.Value = 1;
             btIdentify.Enabled = false;
-            btIdentifyCurveAreas.Enabled = false;
+            //btIdentifyCurveAreas.Enabled = false;
 
             cbDisslv.Checked = true;
 
@@ -164,79 +166,130 @@ namespace FormUI
             IFeatureClass pFeatureClass = pSelLayer.FeatureClass;
             return pFeatureClass;
         }
+
+        private void finish(string msg)
+        {
+            Cursor = Cursors.Default;
+            MessageBox.Show(msg);
+        }
       
        
         private void btIdentifyCurveAreas_Click(object sender, EventArgs e)
         {
-            Cursor = Cursors.WaitCursor;
-
-            string strSelLayerName = cbLayers.SelectedItem.ToString();
-            Int32 nSelectedLayerIndex = ClassLib.CurveAlgo.GetIndexNumberFromLayerName(m_pActiveView, strSelLayerName);
-            IFeatureLayer pSelLayer = (IFeatureLayer)this.m_pMap.get_Layer(nSelectedLayerIndex);
-
-
-            ClassLib.IdentifyCurves idCurves = new ClassLib.IdentifyCurves(
-                pSelLayer.FeatureClass,
-                (double) angleSpinner.Value,
-                cbDisslv.Checked
-                );
-
-            string errorMsg = idCurves.RunCurves(
-                rIDField.Text
-                );
-
-            if (errorMsg.Length > 0)
+            if (this.run == null)
             {
-                MessageBox.Show(errorMsg);
                 return;
             }
+            
+            Cursor = Cursors.WaitCursor;
 
-            IFeatureLayer newLayer = idCurves.MakeOutputLayer(this.txtOutput.Text);
-            if (newLayer == null)
+            try
             {
-                MessageBox.Show("Problem creating the output feature class");
+                FeatureLayer layer = this.run.go();
+                if (this.run.success && layer != null)
+                {
+                    this.m_pMap.AddLayer(layer);
+                    finish("Curves Identified!");
+                    btIdentifyCurveAreas.Enabled = false;
+                    btIdentify.Enabled = true;
+                }
+                else
+                {
+                    finish(this.run.errorMsg);
+                }
             }
-            else
+            catch (System.IO.IOException ex)
             {
-                this.m_pMap.AddLayer(newLayer);
+                finish(ex.Message);
             }
 
             //Set back the default Cursor
-            Cursor = Cursors.Default;
+            
 
             //Conclusion
-            btIdentifyCurveAreas.Enabled = false;
-            btIdentify.Enabled = true;
+            //btIdentifyCurveAreas.Enabled = false;
+            //btIdentify.Enabled = true;
 
-            MessageBox.Show("Curves Identified!");   
-            this.Hide();
-        }
 
-        
-        private void rIDField_Click(object sender, EventArgs e)
-        {
-            rIDField.Items.Clear();
-            IFeatureClass pFClasses = GetSelectedFClass();
-            if (pFClasses == null)
-            {
-                return;
-            }
+            
 
-            IFields fields = pFClasses.Fields;
-            IField field = null;
+            ////string strSelLayerName = cbLayers.SelectedItem.ToString();
+            ////Int32 nSelectedLayerIndex = ClassLib.CurveAlgo.GetIndexNumberFromLayerName(m_pActiveView, strSelLayerName);
+            ////IFeatureLayer pSelLayer = (IFeatureLayer)this.m_pMap.get_Layer(nSelectedLayerIndex);
 
-            for (int i = 0; i < fields.FieldCount; i++)
-            {
-                // Get the field at the given index.
-                field = fields.get_Field(i);
-                rIDField.Items.Add(field.Name);
-            }
+
+            //ClassLib.IdentifyCurves idCurves = new ClassLib.IdentifyCurves(
+            //    pSelLayer.FeatureClass,
+            //    (double)angleSpinner.Value,
+            //    cbDisslv.Checked
+            //    );
+
+            ////List<string> errorMsgs = idCurves.RunCurves(
+            ////    rIDField.Text
+            ////    );
+
+
+
+            //if (errorMsgs.Count > 0)
+            //{
+            //    string msg = "";
+            //    foreach (string s in errorMsgs){
+            //        msg += s + "\n";
+            //    }
+            //    MessageBox.Show(msg);
+            //    return;
+            //}
+
+            //IFeatureLayer newLayer = idCurves.MakeOutputLayer(this.txtOutput.Text);
+            //if (newLayer == null)
+            //{
+            //    MessageBox.Show("Problem creating the output feature class");
+            //}
+            //else
+            //{
+                
+            //}
+
+
+
+            //MessageBox.Show("Curves Identified!");   
+            //this.Hide();
         }
 
         private void cbLayers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            btIdentifyCurveAreas.Enabled = false;
-            updateOutputPath();
+            IFeatureClass fClass = this.GetSelectedFClass();
+
+            if (fClass != null)
+            {
+                this.run = new ClassLib.Run(fClass, this.cbDisslv.Checked, this.angleSpinner.Value);
+
+                if (this.run.feetOrMeters)
+                {
+                    this.cbFeet.Checked = this.run.isFeet;
+                    this.txtOutput.Text = this.run.outputPath;
+                    this.rIDField.Items.AddRange(this.run.fieldNames.ToArray());
+
+                    if (this.rIDField.Items.Count > 0)
+                    {
+                        this.rIDField.SelectedIndex = 0;
+                        this.btIdentifyCurveAreas.Enabled = true;
+                        this.run.routeIdField = this.rIDField.SelectedItem as string;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("The input feature units must be in either meters or feet");
+                    this.rIDField.Items.Clear();
+                    this.btIdentifyCurveAreas.Enabled = false;
+                }
+            }
+            else
+            {
+                this.run = null;
+                this.txtOutput.Text = "";
+                btIdentifyCurveAreas.Enabled = false;
+            }  
         }
 
         private void rIDField_SelectedIndexChanged(object sender, EventArgs e)
@@ -244,51 +297,14 @@ namespace FormUI
             btIdentifyCurveAreas.Enabled = true;
         }
 
-        private string updateOutputPath()
-        {
-            IFeatureClass fClass = this.GetSelectedFClass();
-
-            if (fClass != null)
-            {
-                IDataset ds = (IDataset)fClass;
-
-                string inputPath = System.IO.Path.Combine(ds.Workspace.PathName, ds.Name);
-
-                if (ds.Category.ToLower().IndexOf("shapefile") > -1)
-                {
-                    inputPath += ".shp";
-                }
-
-                string outputPath = ClassLib.Helpers.makeOutputPath(inputPath, this.angleSpinner.Value);
-                this.txtOutput.Text = outputPath;
-
-                Boolean? isFeet = ClassLib.Helpers.isFeetFromFc(fClass);
-
-                if (isFeet == null)
-                {
-                    MessageBox.Show("The input feature units must be in either meters or feet");
-                    this.rIDField.Items.Clear();
-                    this.btIdentifyCurveAreas.Enabled = false;
-                }
-                else
-                {
-                    this.cbFeet.Checked = (bool)isFeet;
-                }
-
-                return System.IO.Path.GetFileName(outputPath);
-            }
-            else
-            {
-                return "";
-            }
-            
-
-            
-        }
-
         private void angleSpinner_ValueChanged(object sender, EventArgs e)
         {
-            updateOutputPath();
+            if (this.run != null)
+            {
+                this.run.decimalAngle = this.angleSpinner.Value;
+                this.txtOutput.Text = this.run.outputPath;
+                this.btIdentifyCurveAreas.Enabled = true;
+            }
         }
      }
 }

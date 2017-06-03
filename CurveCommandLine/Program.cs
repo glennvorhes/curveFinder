@@ -69,7 +69,7 @@ namespace CurveCommandLine
 
                 string inputPath = args[args.Length - 2].Trim();
                 string routeIdField = args[args.Length - 2].Trim();
-                string outputPath = ClassLib.IdentifyCurves.makeOutputPath(inputPath, angle) + "_compare3";
+                string outputPath = ClassLib.Helpers.makeOutputPath(inputPath, angle) + "_compare3";
 
                 Console.WriteLine("Running CurveFinder with");
                 Console.WriteLine(String.Format("\tInput: {0}", inputPath));
@@ -80,11 +80,11 @@ namespace CurveCommandLine
                 ClassLib.LicenseInit.InitializeLicence();
 
                 //string inputFC = @"C:\Users\glenn\Documents\TOPS\CurveFinder\Curves_2.gdb\duval\roads";
-                ClassLib.IdentifyCurves.makeOutputPath(inputPath, angle);
+                ClassLib.Helpers.makeOutputPath(inputPath, angle);
 
                 ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(inputPath, angle, dissolved);
                 curv.RunCurves("OBJECTID");
-                curv.MakeOutputFeatureClass(ClassLib.IdentifyCurves.makeOutputPath(inputPath, angle) + "_compare7");
+                curv.MakeOutputFeatureClass(ClassLib.Helpers.makeOutputPath(inputPath, angle) + "_compare7");
 
                 //ClassLib.LicenseInit.ShutDownLicense();
 

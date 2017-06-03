@@ -13,7 +13,7 @@ namespace ClassLib
             System.Diagnostics.Debug.WriteLine(msg);
         }
 
-        public static string makeOutputPath(string inputFC, decimal angle)
+        public static string makeOutputPath(string inputFC, double angle)
         {
             string outputFile = inputFC.Trim();
             string angText = Math.Round(angle, 2).ToString().Replace(".", "p");

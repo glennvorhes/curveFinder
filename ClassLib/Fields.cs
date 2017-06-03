@@ -52,6 +52,10 @@ namespace ClassLib
         {
             List<IField> fieldList = new List<IField>();
 
+            fieldList.Add(makeFieldText("ROUTE_NAME"));
+            fieldList.Add(makeFieldText("ROUTE_DIRE"));
+            fieldList.Add(makeFieldText("FULL_NAME"));
+
             if (!isDissolved)
             {
                 fieldList.Add(makeFieldInteger("TASLINKID"));
@@ -60,10 +64,6 @@ namespace ClassLib
                 fieldList.Add(makeFieldInteger("TRNNODE_T"));
                 fieldList.Add(makeFieldInteger("RTESYS"));
             }
-
-            fieldList.Add(makeFieldText("ROUTE_NAME"));
-            fieldList.Add(makeFieldText("ROUTE_DIRE"));
-            fieldList.Add(makeFieldText("FULL_NAME"));
 
             if (!isDissolved)
             {

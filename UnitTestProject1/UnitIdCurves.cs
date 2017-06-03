@@ -39,13 +39,16 @@ namespace UnitTestProject1
         [TestMethod]
         public void TestGeneral()
         {
+
+            
             string inputFC = @"C:\Users\glenn\Documents\TOPS\CurveFinder\Curves_2.gdb\duval\roads";
             double ang = 0.7;
-            string outPath = ClassLib.IdentifyCurves.makeOutputPath(inputFC, ang);
+            string outPath = ClassLib.Helpers.makeOutputPath(inputFC, ang);
 
             ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(inputFC, ang, true);
             curv.RunCurves("OBJECTID");
-            curv.MakeOutputFeatureClass(ClassLib.IdentifyCurves.makeOutputPath(inputFC, ang) + "_compare");
+            curv.MakeOutputFeatureClass(ClassLib.Helpers.makeOutputPath(inputFC, ang) + "_compare");
+
         }
 
         [TestMethod]
@@ -53,11 +56,11 @@ namespace UnitTestProject1
         {
             string inputFC = @"C:\Users\glenn\Documents\TOPS\CurveFinder\Curves_2.gdb\duval\roads_smooth";
             double ang = 0.65;
-            ClassLib.IdentifyCurves.makeOutputPath(inputFC, ang);
+            ClassLib.Helpers.makeOutputPath(inputFC, ang);
            
             ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(inputFC, ang, true);
             curv.RunCurves("OBJECTID");
-            curv.MakeOutputFeatureClass(ClassLib.IdentifyCurves.makeOutputPath(inputFC, ang) + "_compare");
+            curv.MakeOutputFeatureClass(ClassLib.Helpers.makeOutputPath(inputFC, ang) + "_compare");
         }
 
 
@@ -66,11 +69,11 @@ namespace UnitTestProject1
         {
             string inputFC = @"C:\Users\glenn\Documents\TOPS\CurveFinder\Curves_2.gdb\duval\roads_smooth";
             double ang = 0.65;
-            ClassLib.IdentifyCurves.makeOutputPath(inputFC, ang);
+            ClassLib.Helpers.makeOutputPath(inputFC, ang);
 
             ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(inputFC, ang, true);
             curv.RunCurves("CATS");
-            curv.MakeOutputFeatureClass(ClassLib.IdentifyCurves.makeOutputPath(inputFC, ang) + "_compare_wrong");
+            curv.MakeOutputFeatureClass(ClassLib.Helpers.makeOutputPath(inputFC, ang) + "_compare_wrong");
         }
 
         [TestMethod]
@@ -78,7 +81,7 @@ namespace UnitTestProject1
         {
             string inputFC = @"C:\Users\glenn\Documents\TOPS\CurveFinder\Curves_2.gdb\duval\roads_smooth_____";
             double ang = 0.65;
-            ClassLib.IdentifyCurves.makeOutputPath(inputFC, ang);
+            ClassLib.Helpers.makeOutputPath(inputFC, ang);
 
             ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(inputFC, ang, true);
             //curv.RunCurves("CATS");
@@ -90,7 +93,7 @@ namespace UnitTestProject1
         {
             string inputFC = @"C:\Users\glenn\Documents\TOPS\CurveFinder\Curves_2.gdb\duval\roads_smooth";
             double ang = 0.65;
-            ClassLib.IdentifyCurves.makeOutputPath(inputFC, ang);
+            ClassLib.Helpers.makeOutputPath(inputFC, ang);
 
             ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(inputFC, ang, true);
             curv.RunCurves("OBJECTID");
@@ -102,7 +105,7 @@ namespace UnitTestProject1
         {
             string inputFC = @"C:\Users\glenn\Desktop\RockMM\duval.shp";
             double ang = 0.65;
-            ClassLib.IdentifyCurves.makeOutputPath(inputFC, ang);
+            ClassLib.Helpers.makeOutputPath(inputFC, ang);
 
             ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(inputFC, ang, true);
             curv.RunCurves("FID");
@@ -114,7 +117,7 @@ namespace UnitTestProject1
         {
             string inputFC = @"C:\Users\glenn\Desktop\RockMM\duval.shp";
             double ang = 0.65;
-            ClassLib.IdentifyCurves.makeOutputPath(inputFC, ang);
+            ClassLib.Helpers.makeOutputPath(inputFC, ang);
 
             ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(inputFC, ang, false);
             curv.RunCurves("FID");
