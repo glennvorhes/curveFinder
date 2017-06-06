@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ESRI.ArcGIS.Geodatabase;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -76,13 +77,14 @@ namespace ClassLib
             string idField = this.inFeatClass.OIDFieldName;
 
             for (int i = 0; i < this.inFeatClass.Fields.FieldCount; i++) {
+                string fieldName = this.inFeatClass.Fields.get_Field(i).Name;
                 // Get the field at the given index.
-                if (idFieldIndex  == -1 && this.inFeatClass.Fields.get_Field(i).Name == idField)
+                if (idFieldIndex == -1 && fieldName == idField)
                 {
                     idFieldIndex = i;
                 }
 
-                if (hwyNameField  != null &&  roadNameIndex == -1 && this.inFeatClass.Fields.get_Field(i).Name.ToLower() == hwyNameField)
+                if (hwyNameField != null && roadNameIndex == -1 && fieldName.ToLower() == hwyNameField.ToLower())
                 {
                     roadNameIndex = i;
                 }
@@ -1486,28 +1488,22 @@ namespace ClassLib
                 }//for
 
                 pFeature = pFeatureCursor.NextFeature();
-
             }//while all polylines
 
             return errorList;
-
         }
 
 
         public ESRI.ArcGIS.Geodatabase.IFeatureClass MakeOutputFeatureClass(string outputFullPath)
         {
 
-            ESRI.ArcGIS.Geodatabase.IFeatureClass pCurveAreaFC = ClassLib.Workspace.CreateOutputFc(this._inFeatClass, Path.GetFileName(outputFullPath), this.isDissolved);
-
-            if (pCurveAreaFC == null)
-            {
-                throw new System.IO.IOException("Unable to create output probably due to a lock on an existing file with the same name");
-            }
+            ESRI.ArcGIS.Geodatabase.IFeatureClass pCurveAreaFC = ClassLib.Workspace.CreateOutputFc(
+                this._inFeatClass, Path.GetFileName(outputFullPath), this.isDissolved);
 
             //fill in the feature class
             //Ensure the feature class contains polyline.
             if (pCurveAreaFC.ShapeType != ESRI.ArcGIS.Geometry.esriGeometryType.esriGeometryPolyline)
-                return null;
+                throw new ArgumentException("Input feature class is not a line");
 
             //Build curve area features.
             foreach (ClassLib.segment.CIOWACurve pIowaCurve in allCurveinthePoly)
@@ -1577,7 +1573,6 @@ namespace ClassLib
                     feature.set_Value(pCurveAreaFC.FindField(Fields.DEGREE), Double.IsNaN(pIowaCurve.CentralAngle) ? -1 : pIowaCurve.CentralAngle);
                     feature.set_Value(pCurveAreaFC.FindField(Fields.HAS_TRANS), pIowaCurve.hasTransition == true ? "Yes" : "No");
                 }
-
 
                 // Commit the new feature to the geodatabase.
                 feature.Store();

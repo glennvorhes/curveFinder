@@ -257,6 +257,7 @@
             this.cbDisslv.TabIndex = 7;
             this.cbDisslv.Text = "Dissolved   Roads";
             this.cbDisslv.UseVisualStyleBackColor = true;
+            this.cbDisslv.CheckedChanged += new System.EventHandler(this.cbDisslv_CheckedChanged);
             // 
             // rIDField
             // 

@@ -26,6 +26,10 @@ namespace UnitTestProject1
         public static string gdbNone = makePath("none", sampleGdb);
         public static string fdsNone = makePath("none", sampleGdb, "fds_BuffaloRoads_feet");
 
+        public static string shpBadWorkspace = @"C:\dummy\fish.shp";
+        public static string gdbBadWorkspace = makePath("BuffaloRoads_feet", "silly.gdb");
+        public static string fdsBadWorkspace = makePath("fdsBuffaloRoads_feet", sampleGdb, "silly_fds");
+
         public static string makePath(string name, string gdb = null, string fds = null)
         {
             name = name.Trim();

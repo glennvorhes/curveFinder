@@ -16,7 +16,6 @@ namespace UnitTestProject1
             ClassLib.LicenseInit.InitializeLicence();
         }
 
-
         [TestMethod]
         public void getFeatureClass()
         {
@@ -44,25 +43,22 @@ namespace UnitTestProject1
         {
             ESRI.ArcGIS.Geodatabase.IFeatureClass fc;
             ESRI.ArcGIS.Geodatabase.IFeatureClass outF;
+
             fc = ClassLib.Workspace.getFeatureClass(samplePaths.shpBuffaloFeet);
+
             outF = ClassLib.Workspace.CreateOutputFc(fc, testOutput + "_dis.shp", true);
             Assert.IsTrue(System.IO.File.Exists(samplePaths.makePath(testOutput + "_dis.shp")));
-            Assert.IsNotNull(outF);
+
             outF = ClassLib.Workspace.CreateOutputFc(fc, testOutput + "_no_dis.shp", false);
             Assert.IsTrue(System.IO.File.Exists(samplePaths.makePath(testOutput + "_no_dis.shp")));
-            Assert.IsNotNull(outF);
-            
+
             fc = ClassLib.Workspace.getFeatureClass(samplePaths.gdbBuffaloFeet);
             outF = ClassLib.Workspace.CreateOutputFc(fc, testOutput + "_dis", true);
-            Assert.IsNotNull(outF);
             outF = ClassLib.Workspace.CreateOutputFc(fc, testOutput + "_no_dis", false);
-            Assert.IsNotNull(outF);
-
+            
             fc = ClassLib.Workspace.getFeatureClass(samplePaths.fdsBuffaloFeet);
             outF = ClassLib.Workspace.CreateOutputFc(fc, testOutput + "_dis_fds", true);
-            Assert.IsNotNull(outF);
             outF = ClassLib.Workspace.CreateOutputFc(fc, testOutput + "_no_dis_fds", false);
-            Assert.IsNotNull(outF);
         }
     }
 }

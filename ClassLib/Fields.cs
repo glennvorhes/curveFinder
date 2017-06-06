@@ -9,6 +9,8 @@ namespace ClassLib
 {
     public static class Fields
     {
+        public const string NO_HIGHWAY = "<None>";
+
         public const string SEGMENT_ID = "SEGMENT_ID";
         public const string CURV_ID = "CURV_ID";
         public const string FULL_NAME = "FULL_NAME";

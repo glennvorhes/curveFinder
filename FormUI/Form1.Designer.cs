@@ -112,6 +112,7 @@
             this.cbDisslv.TabIndex = 21;
             this.cbDisslv.Text = "Dissolved Roads";
             this.cbDisslv.UseVisualStyleBackColor = true;
+            this.cbDisslv.CheckedChanged += new System.EventHandler(this.cbDisslv_CheckedChanged);
             // 
             // label11
             // 

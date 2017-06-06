@@ -16,7 +16,7 @@ namespace FormUI
     public partial class Form1 : Form
     {
         private ClassLib.Run run;
-
+        
         public Form1()
         {
             
@@ -25,8 +25,14 @@ namespace FormUI
             tip.SetToolTip(this.cbFeet, "This checkbox is read only");
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
         private void openFileDialogue(object sender, EventArgs e)
         {
+            this.btIdentifyCurveAreas.Enabled = false;
 
             IGxDialog igxDialog = new GxDialog();
             igxDialog.AllowMultiSelect = false;
@@ -51,16 +57,19 @@ namespace FormUI
                 this.txtInput.Text = this.run.inputPath;
                 this.txtOutput.Text = this.run.outputPath;
 
-
                 if (!run.isFeetOrMeters)
                 {
                     MessageBox.Show("The input coordinate system must be in meters or feet");
+                    
                     return;
                 }
+
+                this.btIdentifyCurveAreas.Enabled = true;
 
                 this.cbFeet.Checked = this.run.isFeet;
 
                 this.rIDField.Items.Clear();
+
                 this.rIDField.Items.AddRange(run.fieldNames.ToArray());
 
                 if (this.rIDField.Items.Count > 0)
@@ -70,17 +79,12 @@ namespace FormUI
             }
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void btIdentifyCurveAreas_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
             try
             {
-                this.run.go();
+                this.run.go((string)this.rIDField.SelectedItem);
             }
             catch (System.IO.IOException ex)
             {
@@ -93,11 +97,11 @@ namespace FormUI
 
             if (this.run.success)
             {
-                MessageBox.Show("Curves Found, output to " + this.run.outputPath);
+                MessageBox.Show("Curves Found, output to " + this.run.outputPath, "Success");
             }
             else
             {
-                MessageBox.Show(this.run.errorMsg);
+                MessageBox.Show(this.run.errorMsg, "Error");
             }
 
         }
@@ -112,6 +116,12 @@ namespace FormUI
         private void rIDField_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.run.roadNameField = this.rIDField.SelectedItem as string;
+            this.btIdentifyCurveAreas.Enabled = true;
+        }
+
+        private void cbDisslv_CheckedChanged(object sender, EventArgs e)
+        {
+            this.run.isDissolved = this.cbDisslv.Checked;
             this.btIdentifyCurveAreas.Enabled = true;
         }
     }

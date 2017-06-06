@@ -167,10 +167,10 @@ namespace FormUI
             return pFeatureClass;
         }
 
-        private void finish(string msg)
+        private void finish(string msg, string caption)
         {
             Cursor = Cursors.Default;
-            MessageBox.Show(msg);
+            MessageBox.Show(msg, caption);
         }
       
        
@@ -185,24 +185,23 @@ namespace FormUI
 
             try
             {
-                FeatureLayer layer = this.run.go();
+                FeatureLayer layer = this.run.go((string)this.rIDField.SelectedItem);
                 if (this.run.success && layer != null)
                 {
                     this.m_pMap.AddLayer(layer);
-                    finish("Curves Identified!");
+                    finish("Curves Identified.\nOutput to\n" +  this.run.outputPath, "Success");
                     btIdentifyCurveAreas.Enabled = false;
                     btIdentify.Enabled = true;
                 }
                 else
                 {
-                    finish(this.run.errorMsg);
+                    finish(this.run.errorMsg, "Error");
                 }
             }
             catch (System.IO.IOException ex)
             {
-                finish(ex.Message);
+                finish(ex.Message, "Error");
             }
-
         }
 
         private void cbLayers_SelectedIndexChanged(object sender, EventArgs e)
@@ -217,18 +216,18 @@ namespace FormUI
                 {
                     this.cbFeet.Checked = this.run.isFeet;
                     this.txtOutput.Text = this.run.outputPath;
+                    this.rIDField.Items.Clear();
                     this.rIDField.Items.AddRange(this.run.fieldNames.ToArray());
 
                     if (this.rIDField.Items.Count > 0)
                     {
                         this.rIDField.SelectedIndex = 0;
                         this.btIdentifyCurveAreas.Enabled = true;
-                        this.run.roadNameField = this.rIDField.SelectedItem as string;
                     }
                 }
                 else
                 {
-                    MessageBox.Show("The input feature units must be in either meters or feet");
+                    MessageBox.Show("The input feature units must be in either meters or feet", "Invalid Coordinate System");
                     this.rIDField.Items.Clear();
                     this.btIdentifyCurveAreas.Enabled = false;
                 }
@@ -254,6 +253,12 @@ namespace FormUI
                 this.txtOutput.Text = this.run.outputPath;
                 this.btIdentifyCurveAreas.Enabled = true;
             }
+        }
+
+        private void cbDisslv_CheckedChanged(object sender, EventArgs e)
+        {
+            this.run.isDissolved = this.cbDisslv.Checked;
+            this.btIdentifyCurveAreas.Enabled = true;
         }
      }
 }

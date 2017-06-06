@@ -100,6 +100,7 @@ C:\Users\glenn\Documents\Visual Studio 2012\Projects\MultiProcess_Ver_09162013_M
 C:\Users\glenn\Documents\Visual Studio 2012\Projects\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\obj\Debug\HorizontalCurveFinder.pdb
 C:\Users\glenn\Documents\Visual Studio 2012\Projects\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\obj\Debug\HorizontalCurveFinder.csprojResolveAssemblyReference.cache
 C:\Users\glenn\Documents\Visual Studio 2012\Projects\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\bin\Debug\HorizontalCurveFinder.esriAddIn
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\bin\Debug\HorizontalCurveFinder.esriAddIn
 C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\bin\Debug\HorizontalCurveFinder.dll
 C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\bin\Debug\HorizontalCurveFinder.pdb
 C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\bin\Debug\ClassLib.dll
@@ -109,4 +110,3 @@ C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General
 C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\obj\Debug\HorizontalCurveFinder.csprojResolveAssemblyReference.cache
 C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\obj\Debug\HorizontalCurveFinder.dll
 C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\obj\Debug\HorizontalCurveFinder.pdb
-C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\bin\Debug\HorizontalCurveFinder.esriAddIn

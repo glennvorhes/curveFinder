@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ClassLib
@@ -80,95 +81,137 @@ namespace ClassLib
             return fields;
         }
 
-        public static ESRI.ArcGIS.Geodatabase.IFeatureClass getFeatureClass(string fPath)
+        public static ESRI.ArcGIS.Geodatabase.IFeatureWorkspace getWorkspace(string fPath)
         {
+            fPath = fPath.Trim();
+
+            string workspacePath = System.IO.Path.GetDirectoryName(fPath);
+            string featureClass = System.IO.Path.GetFileName(fPath);
+
+            if ((new Regex(@"\.shp$")).IsMatch(fPath))
             {
-                ESRI.ArcGIS.Geodatabase.IWorkspaceFactory2 wsf;
-
-
-                string workspacePath = System.IO.Path.GetDirectoryName(fPath);
-                string featureClass = System.IO.Path.GetFileName(fPath);
-                ESRI.ArcGIS.Geodatabase.IWorkspace ws;
-
-                if (fPath.EndsWith(".shp"))
+                try
                 {
-                    wsf = shapeWsf;
-                    ws = shapeWsf.OpenFromFile(workspacePath, 0);
+                    return shapeWsf.OpenFromFile(workspacePath, 0) as IFeatureWorkspace;
                 }
-                else
+                catch (System.Runtime.InteropServices.COMException)
                 {
-                    wsf = gdbWsf;
-                    if (workspacePath.EndsWith(".gdb"))
-                    {
-                        ws = gdbWsf.OpenFromFile(workspacePath, 0);
-                    }
-                    else
-                    {
-                        string datasetName = System.IO.Path.GetFileName(workspacePath);
-                        workspacePath = System.IO.Path.GetDirectoryName(workspacePath);
-                        ws = gdbWsf.OpenFromFile(workspacePath, 0);
+                    throw new System.IO.FileNotFoundException("Shapefile workspace not found: " + workspacePath);
+                }
+            }
+            else if ((new Regex(@"\\[^\\]*\.(gdb|GDB)\\[^\\]*$")).IsMatch(fPath))
+            {
+                try
+                {
+                    return gdbWsf.OpenFromFile(workspacePath, 0) as IFeatureWorkspace;
+                }
+                catch (System.Runtime.InteropServices.COMException)
+                {
+                    throw new System.IO.FileNotFoundException("Geodatabase workspace not found: " + workspacePath);
+                }
+            }
+            else if ((new Regex(@"\\[^\\]*\.(gdb|GDB)\\[^\\]*\\[^\\]*$")).IsMatch(fPath))
+            {
+                string datasetName = System.IO.Path.GetFileName(workspacePath);
+                workspacePath = System.IO.Path.GetDirectoryName(workspacePath);
+                ESRI.ArcGIS.Geodatabase.IWorkspace ws = gdbWsf.OpenFromFile(workspacePath, 0);
 
-                        ESRI.ArcGIS.Geodatabase.IEnumDataset dss = ws.get_Datasets(ESRI.ArcGIS.Geodatabase.esriDatasetType.esriDTFeatureDataset);
-                        ESRI.ArcGIS.Geodatabase.IDataset ds;
+                ESRI.ArcGIS.Geodatabase.IEnumDataset dss = ws.get_Datasets(ESRI.ArcGIS.Geodatabase.esriDatasetType.esriDTFeatureDataset);
+                ESRI.ArcGIS.Geodatabase.IDataset ds;
 
-                        while ((ds = dss.Next()) != null)
-                        {
-                            if (ds.Name == datasetName)
-                            {
-                                ws = ds.Workspace;
-                                break;
-                            }
-                        }
+                while ((ds = dss.Next()) != null)
+                {
+                    if (ds.Name == datasetName)
+                    {
+                        return ds.Workspace as IFeatureWorkspace;
                     }
                 }
-
-                ESRI.ArcGIS.Geodatabase.IFeatureWorkspace fws = (ESRI.ArcGIS.Geodatabase.IFeatureWorkspace)ws;
-
-                ESRI.ArcGIS.Geodatabase.IFeatureClass fc = fws.OpenFeatureClass(featureClass);
-                return fc;
+                throw new System.IO.FileNotFoundException("feature dataset not found: " + System.IO.Path.Combine(workspacePath, datasetName));
+            }
+            else
+            {
+                throw new System.IO.FileNotFoundException("Invalid feature class path: " + fPath);
             }
         }
 
-        public static IFeatureClass CreateOutputFc(ESRI.ArcGIS.Geodatabase.IFeatureClass inputFc, string outName, bool isDissolved)
+        public static ESRI.ArcGIS.Geodatabase.IFeatureClass getFeatureClass(string fPath)
         {
-            IDataset ds = (IDataset)inputFc;
-            IFeatureWorkspace fws = (IFeatureWorkspace)ds.Workspace;
-
-            IWorkspace2 ws = (IWorkspace2)fws;
-
-            if (ws.get_NameExists(esriDatasetType.esriDTFeatureClass, outName))
             {
-                IDataset dsExist = (IDataset)fws.OpenFeatureClass(outName);
-                ISchemaLock lck = (ISchemaLock)dsExist;
-                IEnumSchemaLockInfo lockInfoEnum;
-                lck.GetCurrentSchemaLocks(out lockInfoEnum);
-                ISchemaLockInfo lockInfo;
                 
-                while((lockInfo = lockInfoEnum.Next()) != null){
-                    Debug.WriteLine(lockInfo.SchemaLockType);
+                string featureClass = System.IO.Path.GetFileName(fPath);
+                ESRI.ArcGIS.Geodatabase.IFeatureWorkspace fws = getWorkspace(fPath);
+                
+                try
+                {
+                    return fws.OpenFeatureClass(featureClass);
                 }
-
-                if (dsExist.CanDelete()){
-                        dsExist.Delete();
-                } else {
-                     return null;   
+                catch (System.Runtime.InteropServices.COMException)
+                {
+                    throw new System.IO.FileNotFoundException("Feature Class not found in workspace:\n" + fPath);
                 }
             }
+        }
 
-            
-            IFields fields;
-            IFeatureClass fc;
+        private static void deleteFeatureClass(IDataset ds){
+            if (ds.CanDelete()) {
+                try
+                {
+                    ds.Delete();
+                }
+                catch (System.Runtime.InteropServices.COMException ex)
+                {
+                    throw new System.IO.IOException(ex.Message + " " + System.IO.Path.Combine(((IWorkspace)ds).PathName, ds.Name));
+                }
+            }
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="inputFc"></param>
+        /// <param name="outName"></param>
+        /// <param name="isDissolved"></param>
+        /// <returns></returns>
+        public static IFeatureClass CreateOutputFc(ESRI.ArcGIS.Geodatabase.IFeatureClass inputFc, string outName, bool isDissolved)
+        {
+            IDataset iDataset = (IDataset)inputFc;
+
+            IWorkspace2 ws = (IWorkspace2)iDataset.Workspace;
             IFeatureDataset featDs = inputFc.FeatureDataset;
 
-            IGeoDataset geoDs = (IGeoDataset)inputFc;
-            fields = GetCurveAreaFields(outName.IndexOf(".shp") > -1, isDissolved, geoDs.SpatialReference);
+            if (featDs == null)
+            {
+                IWorkspace2 ws2 = ((IDataset)inputFc).Workspace as IWorkspace2;
+
+                if (ws2.get_NameExists(esriDatasetType.esriDTFeatureClass, outName))
+                {
+                    IDataset dsExist = (IDataset)((IFeatureWorkspace)ws2).OpenFeatureClass(outName);
+                    deleteFeatureClass(dsExist);
+                }
+            }
+            else
+            {
+                IEnumDataset enumDataset = featDs.Subsets;
+                IDataset ids;
+
+                while ((ids = enumDataset.Next()) != null)
+                {
+                    if (ids.Name == outName)
+                    {
+                        deleteFeatureClass(ids);
+                        break;
+                    }
+                }
+            }
+            
+            IFeatureClass fc;
+            IFields fields = GetCurveAreaFields(outName.IndexOf(".shp") > -1, isDissolved, ((IGeoDataset)inputFc).SpatialReference);
 
             try
             {
-                if (featDs == null || featDs.BrowseName.EndsWith(".gdb"))
+                if (featDs == null)
                 {
-
+                    IFeatureWorkspace fws = (IFeatureWorkspace)iDataset.Workspace;
                     fc = fws.CreateFeatureClass(outName, fields, ocDesc.InstanceCLSID, ocDesc.ClassExtensionCLSID, esriFeatureType.esriFTSimple, "SHAPE", "");
                 }
                 else
@@ -176,13 +219,21 @@ namespace ClassLib
                     fc = featDs.CreateFeatureClass(outName, fields, ocDesc.InstanceCLSID, ocDesc.ClassExtensionCLSID, esriFeatureType.esriFTSimple, "SHAPE", "");
                 }
             }
-            catch (System.Runtime.InteropServices.COMException)
+            catch (System.Runtime.InteropServices.COMException ex)
             {
-                return null;
+                string errorMessage = "Could not create output feature class:\n";
+
+                if (featDs == null){
+                    errorMessage += System.IO.Path.Combine(iDataset.Workspace.PathName, outName) + "\n";
+                } else {
+                    errorMessage += System.IO.Path.Combine(iDataset.Workspace.PathName, featDs.Name, outName) + "\n";
+                }
+                errorMessage += ex.Message;
+
+                throw new System.IO.IOException(errorMessage);
             }
-           
+
             return fc;
         }
     }
 }
-

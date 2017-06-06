@@ -12,23 +12,36 @@ namespace ClassLib
         string _inputPath;
         string _outputPath;
         string _roadNameField = null;
-        int _roadNameFieldIndex = -1;
         double _angle = 1;
         bool _isDissolved;
         bool _isRun = false;
-        private bool _isShapefile;
-
+        bool _isShapefile;
+        ESRI.ArcGIS.Carto.FeatureLayer outputLayer = null;
         IFeatureClass _fClass;
         List<string> errorList = new List<string>();
+        string NO_HIGHWAY = " <<none>>";
 
+        /// <summary>
+        /// private helper constructor
+        /// </summary>
+        /// <param name="isDissolved">if the features are dissolved on highway name</param>
+        /// <param name="angle">threshold angle for curve identification</param>
+        /// <param name="roadNameField">field name used to identify the road</param>
         private Run(bool isDissolved, double angle, string roadNameField)
         {
-            this._isDissolved = isDissolved;
-            this._angle = angle;
+            this.isDissolved = isDissolved;
+            this.angle = angle;
             this._roadNameField = roadNameField;
         }
 
-        public Run(string inputPath, double angle = 1.0, string roadNameField = null, bool isDissolved = true) :
+        /// <summary>
+        /// Constructor taking input path as a string and other parameters
+        /// </summary>
+        /// <param name="inputPath">path to input feature class</param>
+        /// <param name="angle">threshold angle for curve identification, as double</param>
+        /// <param name="roadNameField">field name used to identify the road</param>
+        /// <param name="isDissolved">if the features are dissolved on highway name</param>
+        public Run(string inputPath, double angle = 1.0, string roadNameField = Fields.NO_HIGHWAY, bool isDissolved = true) :
             this(isDissolved, angle, roadNameField)
         {
             this._inputPath = inputPath.Trim();
@@ -37,11 +50,24 @@ namespace ClassLib
             this._outputPath = Helpers.makeOutputPath(this._inputPath, this._angle);
         }
 
-        public Run(string inputPath, decimal angle = 1.0M, string roadNameField = null, bool isDissolved = true) :
+        /// <summary>
+        /// Constructor taking input path as a string and other parameters
+        /// </summary>
+        /// <param name="inputPath">path to input feature class</param>
+        /// <param name="angle">threshold angle for curve identification, as decimal</param>
+        /// <param name="roadNameField">field name used to identify the road</param>
+        /// <param name="isDissolved">if the features are dissolved on highway name</param>
+        public Run(string inputPath, decimal angle = 1.0M, string roadNameField = Fields.NO_HIGHWAY, bool isDissolved = true) :
             this(inputPath, (double)angle, roadNameField, isDissolved) { }
 
-
-        public Run(IFeatureClass fClass, double angle = 1.0, string roadNameField = null, bool isDissolved = true)
+        /// <summary>
+        /// Constructor taking input as a feature class and other parameters
+        /// </summary>
+        /// <param name="fClass">input feature class</param>
+        /// <param name="angle">threshold angle for curve identification, as double</param>
+        /// <param name="roadNameField">field name used to identify the road</param>
+        /// <param name="isDissolved">if the features are dissolved on highway name</param>
+        public Run(IFeatureClass fClass, double angle = 1.0, string roadNameField = Fields.NO_HIGHWAY, bool isDissolved = true)
             : this(isDissolved, angle, roadNameField)
         {
             if (fClass != null)
@@ -61,11 +87,65 @@ namespace ClassLib
             }
         }
 
-        public Run(IFeatureClass fClass, decimal angle = 1.0M, string roadNameField = null,  bool isDissolved = true) :
+        /// <summary>
+        /// Constructor taking input as a feature class and other parameters
+        /// </summary>
+        /// <param name="fClass">input feature class</param>
+        /// <param name="angle">threshold angle for curve identification, as decimal</param>
+        /// <param name="roadNameField">field name used to identify the road</param>
+        /// <param name="isDissolved">if the features are dissolved on highway name</param>
+        public Run(IFeatureClass fClass, decimal angle = 1.0M, string roadNameField = Fields.NO_HIGHWAY, bool isDissolved = true) :
             this(fClass, (double)angle, roadNameField, isDissolved) { }
 
+        /// <summary>
+        /// run the finder alogrithm
+        /// </summary>
+        /// <returns></returns>
+        public ESRI.ArcGIS.Carto.FeatureLayer go()
+        {
+            if (this._isRun && this.outputLayer != null)
+            {
+                return this.outputLayer;
+            }
 
+            this.errorList.Clear();
 
+            IdentifyCurves curv = new IdentifyCurves(this._fClass, this.angle, this.isDissolved);
+
+            this.errorList = curv.RunCurves(this.roadNameField == NO_HIGHWAY ? null : this.roadNameField);
+
+            this._isRun = true;
+
+            if (this.success)
+            {
+                IFeatureClass outFeatureClass = curv.MakeOutputFeatureClass(this.outputPath);
+
+                string layerName = System.IO.Path.GetFileName(this.outputPath).Replace(".shp", "");
+                this.outputLayer = new ESRI.ArcGIS.Carto.FeatureLayer();
+                this.outputLayer.Name = layerName;
+                this.outputLayer.FeatureClass = outFeatureClass;
+                return this.outputLayer;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// run the algorithm, helper to set road name field first
+        /// </summary>
+        /// <param name="roadNameField">field identifiying the road name</param>
+        /// <returns></returns>
+        public ESRI.ArcGIS.Carto.FeatureLayer go(string roadNameField)
+        {
+            this.roadNameField = roadNameField;
+            return this.go();
+        }
+
+        /// <summary>
+        /// get if input units is feet or meters, if not the algorithm can't/shouln't be run
+        /// </summary>
         public bool isFeetOrMeters
         {
             get
@@ -74,6 +154,9 @@ namespace ClassLib
             }
         }
 
+        /// <summary>
+        /// if input units is feet
+        /// </summary>
         public bool isFeet
         {
             get
@@ -87,25 +170,9 @@ namespace ClassLib
             }
         }
 
-        public bool isDissolved
-        {
-            get
-            {
-                return this._isDissolved;
-            }
-        }
-
-        public double angle
-        {
-            get { return this._angle; }
-            set
-            {
-                this._isRun = false;
-                this._angle = value;
-                this._outputPath = Helpers.makeOutputPath(this._inputPath, this._angle);
-            }
-        }
-
+        /// <summary>
+        /// if the input is a shapefile
+        /// </summary>
         public bool isShapefile
         {
             get
@@ -114,6 +181,51 @@ namespace ClassLib
             }
         }
 
+        /// <summary>
+        /// if the input features are dissolved on highway name
+        /// </summary>
+        public bool isDissolved
+        {
+            get
+            {
+                return this._isDissolved;
+            }
+            set
+            {
+                this._isDissolved = value;
+                this.isRun = false;
+            }
+        }
+
+
+
+        /// <summary>
+        /// curve angle threshold
+        /// </summary>
+        public double angle
+        {
+            get { return this._angle; }
+            set
+            {
+                if (value > 0 && value <= 10)
+                {
+                    this.isRun = false;
+                    this._angle = value;
+                    if (this._inputPath != null)
+                    {
+                        this._outputPath = Helpers.makeOutputPath(this._inputPath, this._angle);
+                    }
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException("Angle threshold must be between in range 0 < angle <= 10");
+                }
+            }
+        }
+
+        /// <summary>
+        /// helper to set the threshold angle as a decimal
+        /// </summary>
         public decimal decimalAngle
         {
             set
@@ -122,6 +234,9 @@ namespace ClassLib
             }
         }
 
+        /// <summary>
+        /// full path to the input feature class
+        /// </summary>
         public string inputPath
         {
             get
@@ -130,6 +245,9 @@ namespace ClassLib
             }
         }
 
+        /// <summary>
+        /// full path to output feature class
+        /// </summary>
         public string outputPath
         {
             get
@@ -138,6 +256,9 @@ namespace ClassLib
             }
         }
 
+        /// <summary>
+        /// if the run was successful
+        /// </summary>
         public bool success
         {
             get
@@ -146,6 +267,9 @@ namespace ClassLib
             }
         }
 
+        /// <summary>
+        /// concatentated error message
+        /// </summary>
         public string errorMsg
         {
             get
@@ -162,11 +286,14 @@ namespace ClassLib
 
         }
 
+        /// <summary>
+        /// list of field names
+        /// </summary>
         public List<string> fieldNames
         {
             get
             {
-                List<string> fieldList = new List<string>();
+                List<string> fieldList = new List<string>(){this.NO_HIGHWAY};
                 IFields fields = this._fClass.Fields;
 
                 for (int i = 0; i < fields.FieldCount; i++)
@@ -186,6 +313,9 @@ namespace ClassLib
             }
         }
 
+        /// <summary>
+        /// the selected road name field
+        /// </summary>
         public string roadNameField
         {
             get
@@ -201,59 +331,18 @@ namespace ClassLib
 
                 this._isRun = false;
                 this._roadNameField = value;
-                this._roadNameFieldIndex = -1;
-
-                if (value == null)
-                {
-                    return;
-                }
-
-                IFields fields = this._fClass.Fields;
-
-                for (int i = 0; i < fields.FieldCount; i++)
-                {
-                    IField field = fields.get_Field(i);
-
-                    if (field.Name == value)
-                    {
-                        this._roadNameFieldIndex = i;
-                    }
-                }
             }
         }
 
-
-
-        public ESRI.ArcGIS.Carto.FeatureLayer go()
+        private bool isRun
         {
-            if (this._isRun)
+            set
             {
-                return null;
-            }
-
-             //|| this._roadNameFieldIndex == -1
-
-            this.errorList.Clear();
-
-            IdentifyCurves curv = new IdentifyCurves(this._fClass, this.angle, this.isDissolved);
-
-            this.errorList = curv.RunCurves(this.roadNameField);
-
-            this._isRun = true;
-
-            if (this.success)
-            {
-                IFeatureClass outFeatureClass = curv.MakeOutputFeatureClass(this.outputPath);
-
-                string layerName = System.IO.Path.GetFileName(this.outputPath).Replace(".shp", "");
-                ESRI.ArcGIS.Carto.FeatureLayer layer = new ESRI.ArcGIS.Carto.FeatureLayer();
-                layer.Name = layerName;
-                layer.FeatureClass = outFeatureClass;
-                return layer;
-            }
-            else
-            {
-                return null;
+                this._isRun = value;
+                if (!this._isRun)
+                {
+                    this.outputLayer = null;
+                }
             }
         }
     }
