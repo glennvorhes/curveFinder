@@ -203,57 +203,6 @@ namespace FormUI
                 finish(ex.Message);
             }
 
-            //Set back the default Cursor
-            
-
-            //Conclusion
-            //btIdentifyCurveAreas.Enabled = false;
-            //btIdentify.Enabled = true;
-
-
-            
-
-            ////string strSelLayerName = cbLayers.SelectedItem.ToString();
-            ////Int32 nSelectedLayerIndex = ClassLib.CurveAlgo.GetIndexNumberFromLayerName(m_pActiveView, strSelLayerName);
-            ////IFeatureLayer pSelLayer = (IFeatureLayer)this.m_pMap.get_Layer(nSelectedLayerIndex);
-
-
-            //ClassLib.IdentifyCurves idCurves = new ClassLib.IdentifyCurves(
-            //    pSelLayer.FeatureClass,
-            //    (double)angleSpinner.Value,
-            //    cbDisslv.Checked
-            //    );
-
-            ////List<string> errorMsgs = idCurves.RunCurves(
-            ////    rIDField.Text
-            ////    );
-
-
-
-            //if (errorMsgs.Count > 0)
-            //{
-            //    string msg = "";
-            //    foreach (string s in errorMsgs){
-            //        msg += s + "\n";
-            //    }
-            //    MessageBox.Show(msg);
-            //    return;
-            //}
-
-            //IFeatureLayer newLayer = idCurves.MakeOutputLayer(this.txtOutput.Text);
-            //if (newLayer == null)
-            //{
-            //    MessageBox.Show("Problem creating the output feature class");
-            //}
-            //else
-            //{
-                
-            //}
-
-
-
-            //MessageBox.Show("Curves Identified!");   
-            //this.Hide();
         }
 
         private void cbLayers_SelectedIndexChanged(object sender, EventArgs e)
@@ -262,9 +211,9 @@ namespace FormUI
 
             if (fClass != null)
             {
-                this.run = new ClassLib.Run(fClass, this.cbDisslv.Checked, this.angleSpinner.Value);
+                this.run = new ClassLib.Run(fClass, this.angleSpinner.Value, isDissolved: this.cbDisslv.Checked);
 
-                if (this.run.feetOrMeters)
+                if (this.run.isFeetOrMeters)
                 {
                     this.cbFeet.Checked = this.run.isFeet;
                     this.txtOutput.Text = this.run.outputPath;
@@ -274,7 +223,7 @@ namespace FormUI
                     {
                         this.rIDField.SelectedIndex = 0;
                         this.btIdentifyCurveAreas.Enabled = true;
-                        this.run.routeIdField = this.rIDField.SelectedItem as string;
+                        this.run.roadNameField = this.rIDField.SelectedItem as string;
                     }
                 }
                 else

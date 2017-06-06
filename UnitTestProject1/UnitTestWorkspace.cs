@@ -1,75 +1,68 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
+using ESRI.ArcGIS.Geodatabase;
 
 namespace UnitTestProject1
 {
     [TestClass]
     public class UnitTestWorkspace
     {
+        static string testOutput = "testOutput";
 
-        [TestInitialize]
-        public void TestInitialize()
+        [ClassInitialize]
+        public static void setup(TestContext ctx)
         {
             ClassLib.LicenseInit.InitializeLicence();
         }
 
-        [TestMethod]
-        public void getFeatureClassShp()
-        {
-            ESRI.ArcGIS.Geometry.ISpatialReference georef;
-            ESRI.ArcGIS.Geodatabase.IFeatureWorkspace ws;
-            ESRI.ArcGIS.Geodatabase.IFeatureClass fc = ClassLib.Workspace.getFeatureClass(@"C:\Users\glenn\Desktop\RockMM\Segments.shp");
-            Assert.IsNotNull(fc.Fields);
-        }
-
 
         [TestMethod]
-        public void getFeatureClassGdb()
+        public void getFeatureClass()
         {
-            ESRI.ArcGIS.Geometry.ISpatialReference georef;
-            ESRI.ArcGIS.Geodatabase.IFeatureWorkspace ws;
-            ESRI.ArcGIS.Geodatabase.IFeatureClass fc = ClassLib.Workspace.getFeatureClass(@"C:\Users\glenn\Documents\TOPS\CurveFinder\Curves.gdb\roads2_1");
-            Assert.IsNotNull(fc.Fields);
+            ESRI.ArcGIS.Geodatabase.IFeatureClass fc;
+
+            fc = ClassLib.Workspace.getFeatureClass(samplePaths.shpBuffaloFeet);
+            Assert.IsNotNull(fc);
+
+            fc = ClassLib.Workspace.getFeatureClass(samplePaths.gdbBuffaloFeet);
+            Assert.IsNotNull(fc);
+
+            fc = ClassLib.Workspace.getFeatureClass(samplePaths.fdsBuffaloFeet);
+            Assert.IsNotNull(fc);
         }
 
         [TestMethod]
         public void getFeatureClassGdbFd()
         {
-            ESRI.ArcGIS.Geometry.ISpatialReference georef;
-            ESRI.ArcGIS.Geodatabase.IFeatureWorkspace ws;
             ESRI.ArcGIS.Geodatabase.IFeatureClass fc = ClassLib.Workspace.getFeatureClass(@"C:\Users\glenn\Documents\TOPS\CurveFinder\Curves.gdb\duval_1\roads2");
             Assert.IsNotNull(fc.Fields);
         }
 
         [TestMethod]
-        public void createFeatureClassShp()
+        public void createOutputFeatureClass()
         {
-            ESRI.ArcGIS.Geometry.ISpatialReference georef;
-            ESRI.ArcGIS.Geodatabase.IFeatureWorkspace ws;
-            ESRI.ArcGIS.Geodatabase.IFeatureClass fc = ClassLib.Workspace.getFeatureClass(@"C:\Users\glenn\Desktop\RockMM\Segments.shp");
-            ClassLib.Workspace.CreateOutputFc(fc, "cat3.shp", true);
-        }
+            ESRI.ArcGIS.Geodatabase.IFeatureClass fc;
+            ESRI.ArcGIS.Geodatabase.IFeatureClass outF;
+            fc = ClassLib.Workspace.getFeatureClass(samplePaths.shpBuffaloFeet);
+            outF = ClassLib.Workspace.CreateOutputFc(fc, testOutput + "_dis.shp", true);
+            Assert.IsTrue(System.IO.File.Exists(samplePaths.makePath(testOutput + "_dis.shp")));
+            Assert.IsNotNull(outF);
+            outF = ClassLib.Workspace.CreateOutputFc(fc, testOutput + "_no_dis.shp", false);
+            Assert.IsTrue(System.IO.File.Exists(samplePaths.makePath(testOutput + "_no_dis.shp")));
+            Assert.IsNotNull(outF);
+            
+            fc = ClassLib.Workspace.getFeatureClass(samplePaths.gdbBuffaloFeet);
+            outF = ClassLib.Workspace.CreateOutputFc(fc, testOutput + "_dis", true);
+            Assert.IsNotNull(outF);
+            outF = ClassLib.Workspace.CreateOutputFc(fc, testOutput + "_no_dis", false);
+            Assert.IsNotNull(outF);
 
-        [TestMethod]
-        public void createFeatureClassGdb()
-        {
-            ESRI.ArcGIS.Geometry.ISpatialReference georef;
-            ESRI.ArcGIS.Geodatabase.IFeatureWorkspace ws;
-            ESRI.ArcGIS.Geodatabase.IFeatureClass fc = ClassLib.Workspace.getFeatureClass(@"C:\Users\glenn\Documents\TOPS\CurveFinder\Curves.gdb\roads2_1");
-            ClassLib.Workspace.CreateOutputFc(fc, "roads_52", true);
-        }
-
-        [TestMethod]
-        public void createFeatureClassGdbFd()
-        {
-
-
-            ESRI.ArcGIS.Geometry.ISpatialReference georef;
-            ESRI.ArcGIS.Geodatabase.IFeatureWorkspace ws;
-            ESRI.ArcGIS.Geodatabase.IFeatureClass fc = ClassLib.Workspace.getFeatureClass(@"C:\Users\glenn\Documents\TOPS\CurveFinder\Curves.gdb\duval_1\roads2");
-
-            ClassLib.Workspace.CreateOutputFc(fc, "roads2_13", true);
+            fc = ClassLib.Workspace.getFeatureClass(samplePaths.fdsBuffaloFeet);
+            outF = ClassLib.Workspace.CreateOutputFc(fc, testOutput + "_dis_fds", true);
+            Assert.IsNotNull(outF);
+            outF = ClassLib.Workspace.CreateOutputFc(fc, testOutput + "_no_dis_fds", false);
+            Assert.IsNotNull(outF);
         }
     }
 }

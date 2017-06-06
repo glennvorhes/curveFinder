@@ -37,14 +37,22 @@ namespace ClassLib
         public static Boolean? isFeetFromFc(ESRI.ArcGIS.Geodatabase.IFeatureClass pFeatureClass)
         {
             ESRI.ArcGIS.Geodatabase.IGeoDataset geo = (ESRI.ArcGIS.Geodatabase.IGeoDataset)pFeatureClass;
-            ESRI.ArcGIS.Geometry.IProjectedCoordinateSystem proj = (ESRI.ArcGIS.Geometry.IProjectedCoordinateSystem)geo.SpatialReference;
-            if (proj.CoordinateUnit.Name.StartsWith("Meter"))
+            if (geo.SpatialReference is ESRI.ArcGIS.Geometry.IProjectedCoordinateSystem)
             {
-                return false;
-            }
-            else if (proj.CoordinateUnit.Name.StartsWith("Foot"))
-            {
-                return true;
+
+                ESRI.ArcGIS.Geometry.IProjectedCoordinateSystem proj = (ESRI.ArcGIS.Geometry.IProjectedCoordinateSystem)geo.SpatialReference;
+                if (proj.CoordinateUnit.Name.StartsWith("Meter"))
+                {
+                    return false;
+                }
+                else if (proj.CoordinateUnit.Name.StartsWith("Foot"))
+                {
+                    return true;
+                }
+                else
+                {
+                    return null;
+                }
             }
             else
             {

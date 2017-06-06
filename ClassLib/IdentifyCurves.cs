@@ -11,9 +11,9 @@ namespace ClassLib
     public class IdentifyCurves
     {
         //private ESRI.ArcGIS.Carto.IFeatureLayer m_pCurrCurveLayer = null;
-        private ClassLib.curves.HorizontalCurve m_pCurrHozCurve;
-        private ClassLib.curves.HorizontalCurve m_pCurrCurveArea;
-        private ESRI.ArcGIS.Carto.IFeatureLayer m_pCurrCurveAreaLayer;
+        //private ClassLib.curves.HorizontalCurve m_pCurrHozCurve;
+        //private ClassLib.curves.HorizontalCurve m_pCurrCurveArea;
+        //private ESRI.ArcGIS.Carto.IFeatureLayer m_pCurrCurveAreaLayer;
         private ClassLib.curves.CurveCollection m_AllCurveAreas;
 
         private double dAngleThreshold;
@@ -31,9 +31,9 @@ namespace ClassLib
 
         private IdentifyCurves(double nudMaxAngleVariation, bool isDissolved)
         {
-            m_pCurrCurveAreaLayer = null;
-            m_pCurrHozCurve = null;
-            m_pCurrCurveArea = null;
+            //m_pCurrCurveAreaLayer = null;
+            //m_pCurrHozCurve = null;
+            //m_pCurrCurveArea = null;
             m_AllCurveAreas = new ClassLib.curves.CurveCollection();
             allCurveinthePoly = new ClassLib.segment.IowaCurveCollection();
 
@@ -42,49 +42,27 @@ namespace ClassLib
         }
 
 
-        public IdentifyCurves(string inputClassPath, double nudMaxAngleVariation, bool isDissolved): this(nudMaxAngleVariation, isDissolved)
+        public IdentifyCurves(string inputClassPath, double nudMaxAngleVariation, bool isDissolved): 
+            this(nudMaxAngleVariation, isDissolved)
         {
             this._inFeatClass = ClassLib.Workspace.getFeatureClass(inputClassPath);
         }
 
-        public IdentifyCurves(ESRI.ArcGIS.Geodatabase.IFeatureClass inputFClass, double nudMaxAngleVariation, bool isDissolved) : this(nudMaxAngleVariation, isDissolved)
+        public IdentifyCurves(ESRI.ArcGIS.Geodatabase.IFeatureClass inputFClass, double nudMaxAngleVariation, bool isDissolved) : 
+            this(nudMaxAngleVariation, isDissolved)
         {
             this._inFeatClass = inputFClass;
         }
 
-        //private static string parseErrors(List<string> errorList)
-        //{
-        //    if (errorList.Count == 0)
-        //    {
-        //        return "";
-        //    }
-
-        //    string outErrors = "";
-        //    foreach (string err in errorList)
-        //    {
-        //        outErrors += err + "\n";
-        //    }
-        //    return outErrors;
-        //}
 
         public static void showError(string msg){
             Console.WriteLine(msg);
             Debug.WriteLine(msg);
+            //throw new Exception();
         }
 
+        public List<string> RunCurves(string hwyNameField = null){
 
-
-        //public static string makeOutputPath(string inputFC, double angle)
-        //{
-        //    return Helpers.makeOutputPath(inputFC, angle);
-        //}
-
-
-
-        public List<string> RunCurves(string routeIdField){
-
-
-        
             ESRI.ArcGIS.Geodatabase.IGeoDataset geo = (ESRI.ArcGIS.Geodatabase.IGeoDataset)this.inFeatClass;
             ESRI.ArcGIS.Geometry.IProjectedCoordinateSystem proj = (ESRI.ArcGIS.Geometry.IProjectedCoordinateSystem)geo.SpatialReference;
 
@@ -92,23 +70,25 @@ namespace ClassLib
 
             List<string> errorList = new List<string>();
 
-            bool bail = true;
+            int idFieldIndex = -1;
+            int roadNameIndex = -1;
 
-            for (int i = 0; i < this.inFeatClass.Fields.FieldCount; i++)
-            {
+            string idField = this.inFeatClass.OIDFieldName;
+
+            for (int i = 0; i < this.inFeatClass.Fields.FieldCount; i++) {
                 // Get the field at the given index.
-                if (this.inFeatClass.Fields.get_Field(i).Name == routeIdField.Trim())
+                if (idFieldIndex  == -1 && this.inFeatClass.Fields.get_Field(i).Name == idField)
                 {
-                    bail = false;
-                    break;
+                    idFieldIndex = i;
+                }
+
+                if (hwyNameField  != null &&  roadNameIndex == -1 && this.inFeatClass.Fields.get_Field(i).Name.ToLower() == hwyNameField)
+                {
+                    roadNameIndex = i;
                 }
             }
 
-            if (bail)
-            {
-                errorList.Add("specified route id field not found in shapefile");
-                return errorList;
-            }
+            roadNameIndex = roadNameIndex == -1 ? idFieldIndex : roadNameIndex;
 
             //Set defelection angle threshold
             double dPctTSThreshold = 0.0000001; //if the deflection angle of the segment is smaller than dPctTSThreshold*the deflection angle of the previous segment, consider current segment is a transition
@@ -145,9 +125,11 @@ namespace ClassLib
             //pFeature is one polyline, a polyline may contain multiple curve areas
             while (pFeature != null)
             {
+                indexCurveID = 0;
+
                 //Some global variables in one polyline
                 long lCurrPolyLineFID;//current feature ID (polyline ID)
-                string RouteName;//current street name
+                string RoadName;//current street name
                 string RouteDir;//current street direction (N/S/E/W)
                 string RouteFullName;
                 string OfficialN = "";
@@ -172,13 +154,12 @@ namespace ClassLib
 
                 //get basic info of the feature
 
-                int nFieldIndex = pFeature.Fields.FindField(routeIdField);               
-                string strTemp = pFeature.get_Value(nFieldIndex).ToString();
-                lCurrPolyLineFID = long.Parse(strTemp);//Polyline ID
+
+                lCurrPolyLineFID = long.Parse(pFeature.get_Value(idFieldIndex).ToString());//Polyline ID
                 //TODO make it so only allowable fields are ints
 
-                nFieldIndex = pFeature.Fields.FindField(routeIdField);//Street Name
-                RouteName = pFeature.get_Value(nFieldIndex).ToString();
+                //nFieldIndex = pFeature.Fields.FindField(isShapefile ? "FID" : "OBJECTID");//Street Name
+                RoadName = pFeature.get_Value(roadNameIndex).ToString();
 
                 /*
                 nFieldIndex = pFeature.Fields.FindField("FULL_NAME");//Street Name
@@ -315,7 +296,7 @@ namespace ClassLib
                     currIowaSeg.segBasicType = ClassLib.enums.BasicCurveType.TG;//temporary
 
                     //set polyline attributes
-                    currIowaSeg.RouteName = RouteName;//current street name
+                    currIowaSeg.RouteName = RoadName;//current street name
                     currIowaSeg.RouteDir = "";//current street direction (N/S/E/W)
                     currIowaSeg.RouteFullName = "";
                     //currIowaSeg.RouteDir = RouteDir;//current street direction (N/S/E/W)
@@ -871,7 +852,7 @@ namespace ClassLib
                             pCurve.m_pCurve = pSubCurve;
 
                             //put polyline info
-                            pCurve.RouteName = RouteName;//current street name
+                            pCurve.RoadName = RoadName;//current street name
                             pCurve.RouteDir = "";//current street direction (N/S/E/W)
                             pCurve.RouteFullName = "";
                             //pCurve.RouteDir = RouteDir;//current street direction (N/S/E/W)
@@ -1010,7 +991,7 @@ namespace ClassLib
                                 pCurve.m_pCurve = pSubCurve;
 
                                 //put polyline info
-                                pCurve.RouteName = RouteName;//current street name
+                                pCurve.RoadName = RoadName;//current street name
                                 //pCurve.RouteDir = RouteDir;//current street direction (N/S/E/W)
                                 //pCurve.RouteFullName = RouteFullName;
                                 pCurve.RouteDir = "";//current street direction (N/S/E/W)
@@ -1095,7 +1076,7 @@ namespace ClassLib
                                 pCurve.m_pCurve = pSubCurve;
 
                                 //put polyline info
-                                pCurve.RouteName = RouteName;//current street name
+                                pCurve.RoadName = RoadName;//current street name
                                 //pCurve.RouteDir = RouteDir;//current street direction (N/S/E/W)
                                 //pCurve.RouteFullName = RouteFullName;
                                 pCurve.RouteDir = "";//current street direction (N/S/E/W)
@@ -1480,7 +1461,7 @@ namespace ClassLib
                         pCurve.m_pCurve = pSubCurve2;
 
                         //put polyline info
-                        pCurve.RouteName = RouteName;//current street name
+                        pCurve.RoadName = RoadName;//current street name
                         pCurve.RouteDir = "";//current street direction (N/S/E/W)
                         pCurve.RouteFullName = "";
                         //pCurve.RouteDir = RouteDir;//current street direction (N/S/E/W)
@@ -1523,7 +1504,6 @@ namespace ClassLib
                 throw new System.IO.IOException("Unable to create output probably due to a lock on an existing file with the same name");
             }
 
-            
             //fill in the feature class
             //Ensure the feature class contains polyline.
             if (pCurveAreaFC.ShapeType != ESRI.ArcGIS.Geometry.esriGeometryType.esriGeometryPolyline)
@@ -1534,115 +1514,70 @@ namespace ClassLib
             {
                 ESRI.ArcGIS.Geodatabase.IFeature feature = pCurveAreaFC.CreateFeature();
                 feature.Shape = pIowaCurve.m_pCurve;
-                int nFieldIndex = -1;
 
                 if (!this.isDissolved)
                 {
-                    // Update the value of each field
-                    nFieldIndex = pCurveAreaFC.FindField("TASLINKID");
-                    feature.set_Value(nFieldIndex, pIowaCurve.TASlinkID);
-
-                    nFieldIndex = pCurveAreaFC.FindField("TRNLINKID");
-                    feature.set_Value(nFieldIndex, pIowaCurve.TRNLinkID);
-
-                    nFieldIndex = pCurveAreaFC.FindField("TRNNODE_F");
-                    feature.set_Value(nFieldIndex, pIowaCurve.TRNNode_F);
-
-                    nFieldIndex = pCurveAreaFC.FindField("TRNNODE_T");
-                    feature.set_Value(nFieldIndex, pIowaCurve.TRNNote_T);
-
-                    nFieldIndex = pCurveAreaFC.FindField("RTESYS");
-                    feature.set_Value(nFieldIndex, pIowaCurve.RTESys);
-
-                    nFieldIndex = pCurveAreaFC.FindField("OFFICIAL_N");
-                    feature.set_Value(nFieldIndex, pIowaCurve.OfficialN);
-
-                    nFieldIndex = pCurveAreaFC.FindField("VERS_DATE");
-                    feature.set_Value(nFieldIndex, pIowaCurve.Vers_date);
+                    feature.set_Value(pCurveAreaFC.FindField(Fields.TASLINKID), pIowaCurve.TASlinkID);
+                    feature.set_Value(pCurveAreaFC.FindField(Fields.TRNLINKID), pIowaCurve.TRNLinkID);
+                    feature.set_Value(pCurveAreaFC.FindField(Fields.TRNNODE_F), pIowaCurve.TRNNode_F);
+                    feature.set_Value(pCurveAreaFC.FindField(Fields.TRNNODE_T), pIowaCurve.TRNNote_T);
+                    feature.set_Value(pCurveAreaFC.FindField(Fields.RTESYS), pIowaCurve.RTESys);
+                    feature.set_Value(pCurveAreaFC.FindField(Fields.OFFICIAL_N), pIowaCurve.OfficialN);
+                    feature.set_Value(pCurveAreaFC.FindField(Fields.VERS_DATE), pIowaCurve.Vers_date);
                 }
 
-                nFieldIndex = pCurveAreaFC.FindField("ROUTE_NAME");
-                feature.set_Value(nFieldIndex, pIowaCurve.RouteName);
+                feature.set_Value(pCurveAreaFC.FindField(Fields.SEGMENT_ID), pIowaCurve.ObjectID);
+                feature.set_Value(pCurveAreaFC.FindField(Fields.CURV_ID), pIowaCurve.ID);
+                feature.set_Value(pCurveAreaFC.FindField(Fields.FULL_NAME), pIowaCurve.RoadName);
+               
+                int curveTypeFieldIdx = pCurveAreaFC.FindField(Fields.CURV_TYPE);
 
-                nFieldIndex = pCurveAreaFC.FindField("ROUTE_DIRE");
-                feature.set_Value(nFieldIndex, pIowaCurve.RouteDir);
-
-                nFieldIndex = pCurveAreaFC.FindField("FULL_NAME");
-                feature.set_Value(nFieldIndex, pIowaCurve.RouteFullName);
-
-                nFieldIndex = pCurveAreaFC.FindField("CURV_ID");
-                feature.set_Value(nFieldIndex, pIowaCurve.ID);
-
-                nFieldIndex = pCurveAreaFC.FindField("CURV_TYPE");
-                if (pIowaCurve.Type == ClassLib.enums.CurveType.CC)
-                {
-                    feature.set_Value(nFieldIndex, "Component of compound curve");
+                switch (pIowaCurve.Type){
+                    case ClassLib.enums.CurveType.CC:
+                        feature.set_Value(curveTypeFieldIdx, "Component of compound curve");;
+                        break;
+                    case ClassLib.enums.CurveType.IC:
+                        feature.set_Value(curveTypeFieldIdx, "Independent horizontal curve");
+                        break;
+                    case ClassLib.enums.CurveType.RC:
+                        feature.set_Value(curveTypeFieldIdx, "Reverse Curve");
+                        break;
+                    case ClassLib.enums.CurveType.HAP:
+                        feature.set_Value(curveTypeFieldIdx, "Horizontal angle point");
+                        break;
+                    case ClassLib.enums.CurveType.TS:
+                        feature.set_Value(curveTypeFieldIdx, "Transition");
+                        break;
+                    default:
+                        feature.set_Value(curveTypeFieldIdx, "Unknown Type");
+                        break;
                 }
-                else if (pIowaCurve.Type == ClassLib.enums.CurveType.IC)
-                {
-                    feature.set_Value(nFieldIndex, "Independent horizontal curve");
-                }
-                else if (pIowaCurve.Type == ClassLib.enums.CurveType.RC)
-                {
-                    feature.set_Value(nFieldIndex, "Reverse Curve");
-                }
-                else if (pIowaCurve.Type == ClassLib.enums.CurveType.HAP)
-                {
-                    feature.set_Value(nFieldIndex, "Horizontal angle point");
-                }
-                else if (pIowaCurve.Type == ClassLib.enums.CurveType.TS)
-                {
-                    feature.set_Value(nFieldIndex, "Transition");
-                }
-
-                nFieldIndex = pCurveAreaFC.FindField("CURV_DIRE");
+               
                 if (pIowaCurve.Type != ClassLib.enums.CurveType.TS)
                 {
-                    feature.set_Value(nFieldIndex, (pIowaCurve.Dir == ClassLib.enums.SideOfLine.LEFT) ? "Left" : "Right");
+                    feature.set_Value(pCurveAreaFC.FindField(Fields.CURV_DIRE), (pIowaCurve.Dir == ClassLib.enums.SideOfLine.LEFT) ? "Left" : "Right");
                 }
 
-                nFieldIndex = pCurveAreaFC.FindField("CURV_LENG");
-                feature.set_Value(nFieldIndex, pIowaCurve.Length);
+                feature.set_Value(pCurveAreaFC.FindField(Fields.CURV_LENG), pIowaCurve.Length);
 
-                nFieldIndex = pCurveAreaFC.FindField("RADIUS");
                 if (pIowaCurve.Type == ClassLib.enums.CurveType.HAP || pIowaCurve.Type == ClassLib.enums.CurveType.TS)
                 {
-                    feature.set_Value(nFieldIndex, null);
+                    feature.set_Value(pCurveAreaFC.FindField(Fields.RADIUS), null);
+                    feature.set_Value(pCurveAreaFC.FindField(Fields.DEGREE), null);
+                    feature.set_Value(pCurveAreaFC.FindField(Fields.HAS_TRANS), "");
+
+                    if (pIowaCurve.Type == ClassLib.enums.CurveType.HAP)
+                    {
+                        feature.set_Value(pCurveAreaFC.FindField(Fields.INTSC_ANGL), Double.IsNaN(pIowaCurve.CentralAngle) ? -1 : pIowaCurve.CentralAngle);
+                    }
                 }
                 else
                 {
-                    feature.set_Value(nFieldIndex, Double.IsNaN(pIowaCurve.Radius) ? -1 : pIowaCurve.Radius);
+                    feature.set_Value(pCurveAreaFC.FindField(Fields.RADIUS), Double.IsNaN(pIowaCurve.Radius) ? -1 : pIowaCurve.Radius);
+                    feature.set_Value(pCurveAreaFC.FindField(Fields.DEGREE), Double.IsNaN(pIowaCurve.CentralAngle) ? -1 : pIowaCurve.CentralAngle);
+                    feature.set_Value(pCurveAreaFC.FindField(Fields.HAS_TRANS), pIowaCurve.hasTransition == true ? "Yes" : "No");
                 }
 
-                nFieldIndex = pCurveAreaFC.FindField("DEGREE");
-                if (pIowaCurve.Type == ClassLib.enums.CurveType.HAP || pIowaCurve.Type == ClassLib.enums.CurveType.TS)
-                {
-                    feature.set_Value(nFieldIndex, null);
-                }
-                else
-                {
-                    feature.set_Value(nFieldIndex, Double.IsNaN(pIowaCurve.CentralAngle) ? -1 : pIowaCurve.CentralAngle);
-                }
-
-                nFieldIndex = pCurveAreaFC.FindField("HAS_TRANS");
-                if (pIowaCurve.Type == ClassLib.enums.CurveType.HAP || pIowaCurve.Type == ClassLib.enums.CurveType.TS)
-                {
-                    feature.set_Value(nFieldIndex, "");
-                }
-                else
-                {
-                    feature.set_Value(nFieldIndex, pIowaCurve.hasTransition == true ? "Yes" : "No");
-                }
-
-                nFieldIndex = pCurveAreaFC.FindField("INTSC_ANGL");
-                if (pIowaCurve.Type != ClassLib.enums.CurveType.HAP)
-                {
-                    feature.set_Value(nFieldIndex, null);
-                }
-                else
-                {
-                    feature.set_Value(nFieldIndex, Double.IsNaN(pIowaCurve.CentralAngle) ? -1 : pIowaCurve.CentralAngle);
-                }
 
                 // Commit the new feature to the geodatabase.
                 feature.Store();

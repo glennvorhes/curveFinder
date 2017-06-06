@@ -19,7 +19,7 @@ namespace UnitTestProject1
         {
 
             ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(@"C:\Users\glenn\Desktop\RockMM\Segments.shp", 1, true);
-            curv.RunCurves("FID");
+            curv.RunCurves();
         }
 
         [TestMethod]
@@ -46,7 +46,7 @@ namespace UnitTestProject1
             string outPath = ClassLib.Helpers.makeOutputPath(inputFC, ang);
 
             ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(inputFC, ang, true);
-            curv.RunCurves("OBJECTID");
+            curv.RunCurves();
             curv.MakeOutputFeatureClass(ClassLib.Helpers.makeOutputPath(inputFC, ang) + "_compare");
 
         }
@@ -59,7 +59,7 @@ namespace UnitTestProject1
             ClassLib.Helpers.makeOutputPath(inputFC, ang);
            
             ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(inputFC, ang, true);
-            curv.RunCurves("OBJECTID");
+            curv.RunCurves();
             curv.MakeOutputFeatureClass(ClassLib.Helpers.makeOutputPath(inputFC, ang) + "_compare");
         }
 
@@ -72,8 +72,9 @@ namespace UnitTestProject1
             ClassLib.Helpers.makeOutputPath(inputFC, ang);
 
             ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(inputFC, ang, true);
-            curv.RunCurves("CATS");
-            curv.MakeOutputFeatureClass(ClassLib.Helpers.makeOutputPath(inputFC, ang) + "_compare_wrong");
+            //curv.RunCurves("CATS");
+            //curv.MakeOutputFeatureClass(ClassLib.Helpers.makeOutputPath(inputFC, ang) + "_compare_wrong");
+            throw new Exception();
         }
 
         [TestMethod]
@@ -96,7 +97,7 @@ namespace UnitTestProject1
             ClassLib.Helpers.makeOutputPath(inputFC, ang);
 
             ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(inputFC, ang, true);
-            curv.RunCurves("OBJECTID");
+            curv.RunCurves();
             curv.MakeOutputFeatureClass("Bad output");
         }
 
@@ -108,7 +109,7 @@ namespace UnitTestProject1
             ClassLib.Helpers.makeOutputPath(inputFC, ang);
 
             ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(inputFC, ang, true);
-            curv.RunCurves("FID");
+            curv.RunCurves();
             curv.MakeOutputFeatureClass(@"C:\Users\glenn\Desktop\RockMM\duval_mk_shp.shp");
         }
 
@@ -120,7 +121,7 @@ namespace UnitTestProject1
             ClassLib.Helpers.makeOutputPath(inputFC, ang);
 
             ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(inputFC, ang, false);
-            curv.RunCurves("FID");
+            curv.RunCurves();
             curv.MakeOutputFeatureClass(@"C:\Users\glenn\Desktop\RockMM\duval_mk_shp_undis.shp");
         }
     }

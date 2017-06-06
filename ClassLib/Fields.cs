@@ -7,8 +7,26 @@ using System.Threading.Tasks;
 
 namespace ClassLib
 {
-    static class Fields
+    public static class Fields
     {
+        public const string SEGMENT_ID = "SEGMENT_ID";
+        public const string CURV_ID = "CURV_ID";
+        public const string FULL_NAME = "FULL_NAME";
+        public const string TASLINKID = "TASLINKID";
+        public const string TRNLINKID = "TRNLINKID";
+        public const string TRNNODE_F = "TRNNODE_F";
+        public const string TRNNODE_T = "TRNNODE_T";
+        public const string RTESYS = "RTESYS";
+        public const string OFFICIAL_N = "OFFICIAL_N";
+        public const string VERS_DATE = "VERS_DATE";
+        public const string CURV_TYPE = "CURV_TYPE";
+        public const string CURV_DIRE = "CURV_DIRE";
+        public const string CURV_LENG = "CURV_LENG";
+        public const string RADIUS = "RADIUS";
+        public const string DEGREE = "DEGREE";
+        public const string HAS_TRANS = "HAS_TRANS";
+        public const string INTSC_ANGL = "INTSC_ANGL";
+
 
         private static IField makeFieldBase(string fieldName)
         {
@@ -52,33 +70,28 @@ namespace ClassLib
         {
             List<IField> fieldList = new List<IField>();
 
-            fieldList.Add(makeFieldText("ROUTE_NAME"));
-            fieldList.Add(makeFieldText("ROUTE_DIRE"));
-            fieldList.Add(makeFieldText("FULL_NAME"));
+            fieldList.Add(makeFieldInteger(SEGMENT_ID));
+            fieldList.Add(makeFieldInteger(CURV_ID));
+            fieldList.Add(makeFieldText(FULL_NAME));
 
             if (!isDissolved)
             {
-                fieldList.Add(makeFieldInteger("TASLINKID"));
-                fieldList.Add(makeFieldInteger("TRNLINKID"));
-                fieldList.Add(makeFieldInteger("TRNNODE_F"));
-                fieldList.Add(makeFieldInteger("TRNNODE_T"));
-                fieldList.Add(makeFieldInteger("RTESYS"));
+                fieldList.Add(makeFieldInteger(TASLINKID));
+                fieldList.Add(makeFieldInteger(TRNLINKID));
+                fieldList.Add(makeFieldInteger(TRNNODE_F));
+                fieldList.Add(makeFieldInteger(TRNNODE_T));
+                fieldList.Add(makeFieldInteger(RTESYS));
+                fieldList.Add(makeFieldText(OFFICIAL_N));
+                fieldList.Add(makeFieldInteger(VERS_DATE));
             }
 
-            if (!isDissolved)
-            {
-                fieldList.Add(makeFieldText("OFFICIAL_N"));
-                fieldList.Add(makeFieldInteger("VERS_DATE"));
-            }
-
-            fieldList.Add(makeFieldInteger("CURV_ID"));
-            fieldList.Add(makeFieldText("CURV_TYPE"));
-            fieldList.Add(makeFieldText("CURV_DIRE"));
-            fieldList.Add(makeFieldDouble("CURV_LENG"));
-            fieldList.Add(makeFieldDouble("RADIUS"));
-            fieldList.Add(makeFieldDouble("DEGREE"));
-            fieldList.Add(makeFieldText("HAS_TRANS"));
-            fieldList.Add(makeFieldDouble("INTSC_ANGL"));
+            fieldList.Add(makeFieldText(CURV_TYPE));
+            fieldList.Add(makeFieldText(CURV_DIRE));
+            fieldList.Add(makeFieldDouble(CURV_LENG));
+            fieldList.Add(makeFieldDouble(RADIUS));
+            fieldList.Add(makeFieldDouble(DEGREE));
+            fieldList.Add(makeFieldText(HAS_TRANS));
+            fieldList.Add(makeFieldDouble(INTSC_ANGL));
 
             return fieldList;
         }

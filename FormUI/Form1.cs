@@ -47,12 +47,12 @@ namespace FormUI
             }
             else
             {
-                this.run = new ClassLib.Run(nextObj.FullName, cbDisslv.Checked, this.AngleVariation.Value);
+                this.run = new ClassLib.Run(nextObj.FullName, this.AngleVariation.Value, isDissolved: cbDisslv.Checked);
                 this.txtInput.Text = this.run.inputPath;
                 this.txtOutput.Text = this.run.outputPath;
 
 
-                if (!run.feetOrMeters)
+                if (!run.isFeetOrMeters)
                 {
                     MessageBox.Show("The input coordinate system must be in meters or feet");
                     return;
@@ -111,7 +111,7 @@ namespace FormUI
 
         private void rIDField_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.run.routeIdField = this.rIDField.SelectedItem as string;
+            this.run.roadNameField = this.rIDField.SelectedItem as string;
             this.btIdentifyCurveAreas.Enabled = true;
         }
     }

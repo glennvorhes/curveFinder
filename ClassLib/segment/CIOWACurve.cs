@@ -9,7 +9,7 @@ namespace ClassLib.segment
     public class CIOWACurve : System.Object
     {
         //Road layer attributes
-        public string RouteName;//current street name
+        public string RoadName;//current street name
         public string RouteDir;//current street direction (N/S/E/W)
         public string RouteFullName;
         public string OfficialN;

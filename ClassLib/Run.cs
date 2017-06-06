@@ -11,36 +11,38 @@ namespace ClassLib
     {
         string _inputPath;
         string _outputPath;
-        string _routeIdField;
-        int _routeIdIndex = -1;
+        string _roadNameField = null;
+        int _roadNameFieldIndex = -1;
         double _angle = 1;
         bool _isDissolved;
         bool _isRun = false;
+        private bool _isShapefile;
 
         IFeatureClass _fClass;
         List<string> errorList = new List<string>();
 
-        private Run(bool isDissolved, double angle, string routeIdField)
+        private Run(bool isDissolved, double angle, string roadNameField)
         {
             this._isDissolved = isDissolved;
             this._angle = angle;
-            this.routeIdField = routeIdField;
+            this._roadNameField = roadNameField;
         }
 
-        public Run(string inputPath, bool isDissolved = true, double angle = 1.0, string routeIdField = null) :
-            this(isDissolved, angle, routeIdField)
+        public Run(string inputPath, double angle = 1.0, string roadNameField = null, bool isDissolved = true) :
+            this(isDissolved, angle, roadNameField)
         {
-            this._inputPath = inputPath;
+            this._inputPath = inputPath.Trim();
+            this._isShapefile = (new System.Text.RegularExpressions.Regex(".shp$")).IsMatch(this.inputPath);
             this._fClass = Workspace.getFeatureClass(inputPath);
             this._outputPath = Helpers.makeOutputPath(this._inputPath, this._angle);
         }
 
-        public Run(string inputPath, bool isDissolved = true, decimal angle = 1.0M, string routeIdField = null) :
-            this(inputPath, isDissolved, (double)angle, routeIdField) { }
+        public Run(string inputPath, decimal angle = 1.0M, string roadNameField = null, bool isDissolved = true) :
+            this(inputPath, (double)angle, roadNameField, isDissolved) { }
 
 
-        public Run(IFeatureClass fClass, bool isDissolved = true, double angle = 1.0, string routeIdField = null)
-            : this(isDissolved, angle, routeIdField)
+        public Run(IFeatureClass fClass, double angle = 1.0, string roadNameField = null, bool isDissolved = true)
+            : this(isDissolved, angle, roadNameField)
         {
             if (fClass != null)
             {
@@ -52,38 +54,19 @@ namespace ClassLib
                 if (ds.Category.ToLower().IndexOf("shapefile") > -1)
                 {
                     this._inputPath += ".shp";
+                    this._isShapefile = true;
                 }
 
                 this._outputPath = Helpers.makeOutputPath(this._inputPath, this._angle);
-
-                //string outputPath = ClassLib.Helpers.makeOutputPath(inputPath, (double)this.angleSpinner.Value);
-                //this.txtOutput.Text = outputPath;
-
-
-
-                //Boolean? isFeet = ClassLib.Helpers.isFeetFromFc(fClass);
-
-                //if (isFeet == null)
-                //{
-                //    MessageBox.Show("The input feature units must be in either meters or feet");
-                //    this.rIDField.Items.Clear();
-                //    this.btIdentifyCurveAreas.Enabled = false;
-                //}
-                //else
-                //{
-                //    this.cbFeet.Checked = (bool)isFeet;
-                //}
-
-                //return System.IO.Path.GetFileName(outputPath);
             }
         }
 
-        public Run(IFeatureClass fClass, bool isDissolved = true, decimal angle = 1.0M, string routeIdField = null) :
-            this(fClass, isDissolved, (double)angle, routeIdField) { }
+        public Run(IFeatureClass fClass, decimal angle = 1.0M, string roadNameField = null,  bool isDissolved = true) :
+            this(fClass, (double)angle, roadNameField, isDissolved) { }
 
 
 
-        public bool feetOrMeters
+        public bool isFeetOrMeters
         {
             get
             {
@@ -95,7 +78,7 @@ namespace ClassLib
         {
             get
             {
-                if (!this.feetOrMeters)
+                if (!this.isFeetOrMeters)
                 {
                     throw new Exception("should check if feet or meters first");
                 }
@@ -120,6 +103,14 @@ namespace ClassLib
                 this._isRun = false;
                 this._angle = value;
                 this._outputPath = Helpers.makeOutputPath(this._inputPath, this._angle);
+            }
+        }
+
+        public bool isShapefile
+        {
+            get
+            {
+                return this._isShapefile;
             }
         }
 
@@ -181,7 +172,8 @@ namespace ClassLib
                 for (int i = 0; i < fields.FieldCount; i++)
                 {
                     IField field = fields.get_Field(i);
-                    if (field.Name == "Shape")
+
+                    if ((new System.Text.RegularExpressions.Regex("^object|fid|shape")).IsMatch(field.Name.ToLower()))
                     {
                         continue;
                     }
@@ -194,22 +186,22 @@ namespace ClassLib
             }
         }
 
-        public string routeIdField
+        public string roadNameField
         {
             get
             {
-                return this._routeIdField;
+                return this._roadNameField;
             }
             set
             {
-                if (value == this.routeIdField)
+                if (value == this.roadNameField)
                 {
                     return;
                 }
 
                 this._isRun = false;
-                this._routeIdField = value;
-                this._routeIdIndex = -1;
+                this._roadNameField = value;
+                this._roadNameFieldIndex = -1;
 
                 if (value == null)
                 {
@@ -224,7 +216,7 @@ namespace ClassLib
 
                     if (field.Name == value)
                     {
-                        this._routeIdIndex = i;
+                        this._roadNameFieldIndex = i;
                     }
                 }
             }
@@ -234,16 +226,18 @@ namespace ClassLib
 
         public ESRI.ArcGIS.Carto.FeatureLayer go()
         {
-            if (this._isRun || this._routeIdIndex == -1)
+            if (this._isRun)
             {
                 return null;
             }
+
+             //|| this._roadNameFieldIndex == -1
 
             this.errorList.Clear();
 
             IdentifyCurves curv = new IdentifyCurves(this._fClass, this.angle, this.isDissolved);
 
-            this.errorList = curv.RunCurves(this.routeIdField);
+            this.errorList = curv.RunCurves(this.roadNameField);
 
             this._isRun = true;
 

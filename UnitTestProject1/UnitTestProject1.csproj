@@ -35,6 +35,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ESRI.ArcGIS.Carto, Version=10.2.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
     <Reference Include="ESRI.ArcGIS.Geodatabase, Version=10.2.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>False</EmbedInteropTypes>
@@ -58,9 +62,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="samplePaths.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitIdCurves.cs" />
+    <Compile Include="UnitTestRun.cs" />
     <Compile Include="UnitTestWorkspace.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -69,8 +75,75 @@
       <Name>ClassLib</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="samples\" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000001.gdbindexes" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000001.gdbtable" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000001.gdbtablx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000001.TablesByName.atx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000002.gdbtable" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000002.gdbtablx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000003.gdbindexes" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000003.gdbtable" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000003.gdbtablx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000004.CatItemsByPhysicalName.atx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000004.CatItemsByType.atx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000004.FDO_UUID.atx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000004.gdbindexes" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000004.gdbtable" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000004.gdbtablx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000004.spx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000005.CatItemTypesByName.atx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000005.CatItemTypesByParentTypeID.atx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000005.CatItemTypesByUUID.atx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000005.gdbindexes" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000005.gdbtable" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000005.gdbtablx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000006.CatRelsByDestinationID.atx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000006.CatRelsByOriginID.atx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000006.CatRelsByType.atx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000006.FDO_UUID.atx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000006.gdbindexes" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000006.gdbtable" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000006.gdbtablx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000007.CatRelTypesByBackwardLabel.atx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000007.CatRelTypesByDestItemTypeID.atx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000007.CatRelTypesByForwardLabel.atx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000007.CatRelTypesByName.atx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000007.CatRelTypesByOriginItemTypeID.atx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000007.CatRelTypesByUUID.atx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000007.gdbindexes" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000007.gdbtable" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000007.gdbtablx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000009.FDO_GlobalID.atx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000009.gdbindexes" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000009.gdbtable" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000009.gdbtablx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a00000009.spx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a0000000a.gdbindexes" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a0000000a.gdbtable" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a0000000a.gdbtablx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a0000000a.spx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a0000000b.gdbindexes" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a0000000b.gdbtable" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a0000000b.gdbtablx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a0000000b.spx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a0000000c.gdbindexes" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a0000000c.gdbtable" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a0000000c.gdbtablx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\a0000000c.spx" />
+    <None Include="samples\BuffaloCountyRoads.gdb\gdb" />
+    <None Include="samples\BuffaloCountyRoads.gdb\timestamps" />
+    <None Include="samples\BuffaloRoadsDis_sub.cpg" />
+    <None Include="samples\BuffaloRoadsDis_sub.dbf" />
+    <None Include="samples\BuffaloRoadsDis_sub.prj" />
+    <None Include="samples\BuffaloRoadsDis_sub.sbn" />
+    <None Include="samples\BuffaloRoadsDis_sub.sbx" />
+    <None Include="samples\BuffaloRoadsDis_sub.shp" />
+    <None Include="samples\BuffaloRoadsDis_sub.shx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="samples\BuffaloRoadsDis_sub.shp.xml" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

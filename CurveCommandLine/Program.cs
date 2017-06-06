@@ -83,7 +83,7 @@ namespace CurveCommandLine
                 ClassLib.Helpers.makeOutputPath(inputPath, angle);
 
                 ClassLib.IdentifyCurves curv = new ClassLib.IdentifyCurves(inputPath, angle, dissolved);
-                curv.RunCurves("OBJECTID");
+                curv.RunCurves();
                 curv.MakeOutputFeatureClass(ClassLib.Helpers.makeOutputPath(inputPath, angle) + "_compare7");
 
                 //ClassLib.LicenseInit.ShutDownLicense();

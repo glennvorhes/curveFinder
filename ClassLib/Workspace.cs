@@ -20,13 +20,13 @@ namespace ClassLib
 
             IFields fields = new FieldsClass();
             IFieldsEdit fieldsEdit = (IFieldsEdit)fields;
-            if (isDissolved)
+
+            List<IField> fieldList = ClassLib.Fields.getFields(isDissolved);
+            fieldsEdit.FieldCount_2 = fieldList.Count + 2;
+
+            for (int i = 0; i < fieldList.Count; i++)
             {
-                fieldsEdit.FieldCount_2 = 13;
-            }
-            else
-            {
-                fieldsEdit.FieldCount_2 = 20;
+                fieldsEdit.set_Field(i + 2, fieldList[i]);
             }
 
             // Create Object ID field.
@@ -75,12 +75,7 @@ namespace ClassLib
             fieldEdit.Required_2 = true;
             fieldsEdit.set_Field(1, fieldUserDefined);
 
-            List<IField> fieldList = ClassLib.Fields.getFields(isDissolved);
 
-            for (int i = 0; i < fieldList.Count; i++)
-            {
-                fieldsEdit.set_Field(i + 2, fieldList[i]);
-            }
 
             return fields;
         }
