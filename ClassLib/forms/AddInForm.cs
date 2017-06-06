@@ -1,11 +1,7 @@
-﻿using ESRI.ArcGIS.NetworkAnalysis;
-using ESRI.ArcGIS.Geometry;
-using ESRI.ArcGIS.Geodatabase;
-using ESRI.ArcGIS.esriSystem;
-using ESRI.ArcGIS.Framework;
+﻿using ESRI.ArcGIS.ArcMapUI;
 using ESRI.ArcGIS.Carto;
-using ESRI.ArcGIS.ArcMapUI;
-using ESRI.ArcGIS.Display;
+using ESRI.ArcGIS.Framework;
+using ESRI.ArcGIS.Geodatabase;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,17 +9,12 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Diagnostics;
-using ClassLib.curves;
-using ClassLib.enums;
-using ClassLib.segment;
 
-
-
-namespace FormUI
+namespace ClassLib.forms
 {
-    public partial class DlgCurveFinderQuery : Form
+    public partial class AddInForm : Form
     {
         //variables
         private IMap m_pMap;
@@ -104,9 +95,11 @@ namespace FormUI
         }
 
         //constructor
-        public DlgCurveFinderQuery()
+        public AddInForm()
         {
             InitializeComponent();
+            ToolTip tip = new ToolTip();
+            tip.SetToolTip(this.cbFeet, "This checkbox is read only");
         }
 
         //initialization
@@ -114,7 +107,7 @@ namespace FormUI
         {
             IEnumLayer pEnumLayer = m_pMap.get_Layers(null, true);
 
-           
+
             pEnumLayer.Reset();
             ILayer pLayer;
             while ((pLayer = pEnumLayer.Next()) != null)
@@ -172,15 +165,15 @@ namespace FormUI
             Cursor = Cursors.Default;
             MessageBox.Show(msg, caption);
         }
-      
-       
+
+
         private void btIdentifyCurveAreas_Click(object sender, EventArgs e)
         {
             if (this.run == null)
             {
                 return;
             }
-            
+
             Cursor = Cursors.WaitCursor;
 
             try
@@ -189,7 +182,7 @@ namespace FormUI
                 if (this.run.success && layer != null)
                 {
                     this.m_pMap.AddLayer(layer);
-                    finish("Curves Identified.\nOutput to\n" +  this.run.outputPath, "Success");
+                    finish("Curves Identified.\nOutput to\n" + this.run.outputPath, "Success");
                     btIdentifyCurveAreas.Enabled = false;
                     btIdentify.Enabled = true;
                 }
@@ -237,7 +230,7 @@ namespace FormUI
                 this.run = null;
                 this.txtOutput.Text = "";
                 btIdentifyCurveAreas.Enabled = false;
-            }  
+            }
         }
 
         private void rIDField_SelectedIndexChanged(object sender, EventArgs e)
@@ -257,8 +250,12 @@ namespace FormUI
 
         private void cbDisslv_CheckedChanged(object sender, EventArgs e)
         {
-            this.run.isDissolved = this.cbDisslv.Checked;
+            if (this.run != null)
+            {
+                this.run.isDissolved = this.cbDisslv.Checked;
+            }
+            
             this.btIdentifyCurveAreas.Enabled = true;
         }
-     }
+    }
 }

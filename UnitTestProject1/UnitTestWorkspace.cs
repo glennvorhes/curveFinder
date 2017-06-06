@@ -22,21 +22,10 @@ namespace UnitTestProject1
             ESRI.ArcGIS.Geodatabase.IFeatureClass fc;
 
             fc = ClassLib.Workspace.getFeatureClass(samplePaths.shpBuffaloFeet);
-            Assert.IsNotNull(fc);
-
             fc = ClassLib.Workspace.getFeatureClass(samplePaths.gdbBuffaloFeet);
-            Assert.IsNotNull(fc);
-
             fc = ClassLib.Workspace.getFeatureClass(samplePaths.fdsBuffaloFeet);
-            Assert.IsNotNull(fc);
         }
 
-        [TestMethod]
-        public void getFeatureClassGdbFd()
-        {
-            ESRI.ArcGIS.Geodatabase.IFeatureClass fc = ClassLib.Workspace.getFeatureClass(@"C:\Users\glenn\Documents\TOPS\CurveFinder\Curves.gdb\duval_1\roads2");
-            Assert.IsNotNull(fc.Fields);
-        }
 
         [TestMethod]
         public void createOutputFeatureClass()

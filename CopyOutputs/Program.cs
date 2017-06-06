@@ -44,16 +44,10 @@ namespace CopyOutputs
                 try
                 {
                     fileList.AddRange(
-                        projectAndFiles("HorizontalCurveFinder",
-                        new string[] { 
-                            "HorizontalCurveFinder.esriAddIn", "HorizontalCurveFinder.dll", "HorizontalCurveFinder.pdb", "ClassLib.dll", "ClassLib.pdb" 
-                        })
-                        );
+                        projectAndFiles("HorizontalCurveFinder", new string[] {"HorizontalCurveFinder.esriAddIn"}));
 
-                    fileList.AddRange(projectAndFiles("FormUI", new string[] { "FormUI.exe", "FormUI.exe.config", "FormUI.pdb" }));
-                    fileList.AddRange(projectAndFiles("CurveCommandLine", new string[] {
-                        "CurveCommandLine.exe", "CurveCommandLine.exe.config", "CurveCommandLine.pdb" 
-                    }));
+                    fileList.AddRange(projectAndFiles("FormUI", new string[] { "FormUI.exe", "ClassLib.dll" }));
+                    fileList.AddRange(projectAndFiles("CurveCommandLine", new string[] {"CurveCommandLine.exe"}));
 
                     List<string> errorList = new List<string>();
 

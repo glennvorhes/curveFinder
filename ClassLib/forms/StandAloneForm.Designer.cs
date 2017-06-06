@@ -1,6 +1,6 @@
-﻿namespace FormUI
+﻿namespace ClassLib.forms
 {
-    partial class Form1
+    partial class StandAloneForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StandAloneForm));
             this.btnInput = new System.Windows.Forms.Button();
             this.txtInput = new System.Windows.Forms.TextBox();
             this.txtOutput = new System.Windows.Forms.TextBox();
@@ -48,7 +48,7 @@
             // 
             // btnInput
             // 
-            this.btnInput.Location = new System.Drawing.Point(438, 22);
+            this.btnInput.Location = new System.Drawing.Point(24, 12);
             this.btnInput.Name = "btnInput";
             this.btnInput.Size = new System.Drawing.Size(49, 23);
             this.btnInput.TabIndex = 0;
@@ -59,32 +59,34 @@
             // txtInput
             // 
             this.txtInput.BackColor = System.Drawing.Color.White;
-            this.txtInput.Location = new System.Drawing.Point(24, 22);
+            this.txtInput.Location = new System.Drawing.Point(84, 15);
             this.txtInput.Name = "txtInput";
             this.txtInput.ReadOnly = true;
-            this.txtInput.Size = new System.Drawing.Size(408, 20);
+            this.txtInput.Size = new System.Drawing.Size(703, 20);
             this.txtInput.TabIndex = 1;
             this.txtInput.WordWrap = false;
             // 
             // txtOutput
             // 
             this.txtOutput.BackColor = System.Drawing.Color.White;
-            this.txtOutput.Location = new System.Drawing.Point(24, 62);
+            this.txtOutput.Location = new System.Drawing.Point(70, 208);
             this.txtOutput.Name = "txtOutput";
             this.txtOutput.ReadOnly = true;
-            this.txtOutput.Size = new System.Drawing.Size(408, 20);
+            this.txtOutput.Size = new System.Drawing.Size(717, 20);
             this.txtOutput.TabIndex = 2;
             // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.cbFeet);
+            this.groupBox3.Controls.Add(this.rIDField);
             this.groupBox3.Controls.Add(this.cbDisslv);
+            this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.label11);
             this.groupBox3.Controls.Add(this.label15);
             this.groupBox3.Controls.Add(this.AngleVariation);
-            this.groupBox3.Location = new System.Drawing.Point(24, 148);
+            this.groupBox3.Location = new System.Drawing.Point(24, 50);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(489, 108);
+            this.groupBox3.Size = new System.Drawing.Size(489, 136);
             this.groupBox3.TabIndex = 22;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Configuration";
@@ -93,7 +95,7 @@
             // 
             this.cbFeet.AutoCheck = false;
             this.cbFeet.AutoSize = true;
-            this.cbFeet.Location = new System.Drawing.Point(141, 28);
+            this.cbFeet.Location = new System.Drawing.Point(144, 66);
             this.cbFeet.Name = "cbFeet";
             this.cbFeet.Size = new System.Drawing.Size(103, 17);
             this.cbFeet.TabIndex = 22;
@@ -106,7 +108,7 @@
             this.cbDisslv.AutoSize = true;
             this.cbDisslv.Checked = true;
             this.cbDisslv.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbDisslv.Location = new System.Drawing.Point(20, 28);
+            this.cbDisslv.Location = new System.Drawing.Point(23, 66);
             this.cbDisslv.Name = "cbDisslv";
             this.cbDisslv.Size = new System.Drawing.Size(106, 17);
             this.cbDisslv.TabIndex = 21;
@@ -117,7 +119,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(17, 63);
+            this.label11.Location = new System.Drawing.Point(20, 104);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(126, 13);
             this.label11.TabIndex = 5;
@@ -126,11 +128,11 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(250, 63);
+            this.label15.Location = new System.Drawing.Point(238, 105);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(40, 13);
+            this.label15.Size = new System.Drawing.Size(45, 13);
             this.label15.TabIndex = 3;
-            this.label15.Text = "degree";
+            this.label15.Text = "degrees";
             // 
             // AngleVariation
             // 
@@ -140,7 +142,7 @@
             0,
             0,
             65536});
-            this.AngleVariation.Location = new System.Drawing.Point(150, 61);
+            this.AngleVariation.Location = new System.Drawing.Point(153, 102);
             this.AngleVariation.Maximum = new decimal(new int[] {
             10,
             0,
@@ -152,7 +154,7 @@
             0,
             65536});
             this.AngleVariation.Name = "AngleVariation";
-            this.AngleVariation.Size = new System.Drawing.Size(94, 20);
+            this.AngleVariation.Size = new System.Drawing.Size(73, 20);
             this.AngleVariation.TabIndex = 4;
             this.AngleVariation.Value = new decimal(new int[] {
             1,
@@ -165,7 +167,7 @@
             // 
             this.btIdentifyCurveAreas.Enabled = false;
             this.btIdentifyCurveAreas.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btIdentifyCurveAreas.Location = new System.Drawing.Point(334, 90);
+            this.btIdentifyCurveAreas.Location = new System.Drawing.Point(555, 94);
             this.btIdentifyCurveAreas.Name = "btIdentifyCurveAreas";
             this.btIdentifyCurveAreas.Size = new System.Drawing.Size(84, 42);
             this.btIdentifyCurveAreas.TabIndex = 23;
@@ -177,7 +179,7 @@
             // 
             this.rIDField.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.rIDField.FormattingEnabled = true;
-            this.rIDField.Location = new System.Drawing.Point(138, 103);
+            this.rIDField.Location = new System.Drawing.Point(137, 26);
             this.rIDField.Name = "rIDField";
             this.rIDField.Size = new System.Drawing.Size(176, 21);
             this.rIDField.TabIndex = 25;
@@ -186,7 +188,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(21, 106);
+            this.label10.Location = new System.Drawing.Point(20, 29);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(111, 13);
             this.label10.TabIndex = 24;
@@ -195,27 +197,25 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(442, 65);
+            this.label1.Location = new System.Drawing.Point(21, 212);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(39, 13);
             this.label1.TabIndex = 26;
             this.label1.Text = "Output";
             // 
-            // Form1
+            // StandAloneForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(541, 296);
+            this.ClientSize = new System.Drawing.Size(800, 256);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.rIDField);
-            this.Controls.Add(this.label10);
             this.Controls.Add(this.btIdentifyCurveAreas);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.txtOutput);
             this.Controls.Add(this.txtInput);
             this.Controls.Add(this.btnInput);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Form1";
+            this.Name = "StandAloneForm";
             this.Text = "Curve Finder";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox3.ResumeLayout(false);
@@ -241,7 +241,6 @@
         private System.Windows.Forms.ComboBox rIDField;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label1;
-
     }
-}
 
+}

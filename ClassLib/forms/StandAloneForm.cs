@@ -1,25 +1,23 @@
 ﻿using ESRI.ArcGIS.CatalogUI;
-using ESRI.ArcGIS.Geodatabase;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace FormUI
+namespace ClassLib.forms
 {
-    public partial class Form1 : Form
+    public partial class StandAloneForm : Form
     {
         private ClassLib.Run run;
-        
-        public Form1()
+
+        public StandAloneForm()
         {
-            
+
             InitializeComponent();
             ToolTip tip = new ToolTip();
             tip.SetToolTip(this.cbFeet, "This checkbox is read only");
@@ -60,7 +58,7 @@ namespace FormUI
                 if (!run.isFeetOrMeters)
                 {
                     MessageBox.Show("The input coordinate system must be in meters or feet");
-                    
+
                     return;
                 }
 

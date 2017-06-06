@@ -13,8 +13,13 @@
   <AddIn language="CLR4.5" library="HorizontalCurveFinder.dll" namespace="HorizontalCurveFinder">
     <ArcMap>
       <Commands>
-        <Button id="TOPS_Lab_at_HorizontalCurveFinder_CHorztlCurveElf" class="CHorztlCurveElf" message="Identify the horizontal curves and computing their radius and angle for a specific layer. " caption="CHorztlCurveElf" tip="Identify the horizontal curves and computing their radius and angle for a specific layer. " category="Add-In Controls" image="Images\CHorztlCurveElf.png">
-          <Help heading="Horizontal Curve Finder">Identify the horizontal curves and computing their radius and angle for a specific layer. </Help>
+        <Button id="TOPS_Lab_at_HorizontalCurveFinder_CHorztlCurveElf" 
+                class="CHorztlCurveElf" 
+                message="Identify the horizontal curves and computing their radius and angle for a specific layer. " 
+                caption="CHorztlCurveElf" tip="Identify the horizontal curves and computing their radius and angle for a specific layer. " 
+                category="Add-In Controls" 
+                image="CHorztlCurveElf.png">
+          <Help heading="Horizontal Curve Finder">Identify the horizontal curves and computing their radius and angle for a specific layer.</Help>
         </Button>
       </Commands>
     </ArcMap>

@@ -33,13 +33,13 @@ namespace HorizontalCurveFinder
             m_pMap = GetMapFromArcMap(m_pApp);
             if (m_pMap == null)
                 return;
-              
-            FormUI.DlgCurveFinderQuery dlg = new FormUI.DlgCurveFinderQuery();
-            dlg.theMap = m_pMap;
-            dlg.theApp = m_pApp;
-            dlg.theMxDoc = m_pMxDocument;
-            dlg.theActiveView = m_pActiveView;
-            dlg.Show();
+
+            ClassLib.forms.AddInForm addInForm = new ClassLib.forms.AddInForm();
+            addInForm.theMap = m_pMap;
+            addInForm.theApp = m_pApp;
+            addInForm.theMxDoc = m_pMxDocument;
+            addInForm.theActiveView = m_pActiveView;
+            addInForm.Show();
         }
 
         protected override void OnUpdate()

@@ -2,3 +2,6 @@ C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General
 C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\ClassLib\bin\Debug\ClassLib.pdb
 C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\ClassLib\obj\Debug\ClassLib.dll
 C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\ClassLib\obj\Debug\ClassLib.pdb
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\ClassLib\obj\Debug\ClassLib.forms.StandAloneForm.resources
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\ClassLib\obj\Debug\ClassLib.csproj.GenerateResource.Cache
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\ClassLib\obj\Debug\ClassLib.forms.AddInForm.resources

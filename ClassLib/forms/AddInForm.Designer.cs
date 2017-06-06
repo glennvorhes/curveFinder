@@ -1,6 +1,6 @@
-﻿namespace FormUI
+﻿namespace ClassLib.forms
 {
-    partial class DlgCurveFinderQuery
+    partial class AddInForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddInForm));
             this.label1 = new System.Windows.Forms.Label();
             this.cbLayers = new System.Windows.Forms.ComboBox();
             this.btIdentify = new System.Windows.Forms.Button();
@@ -45,10 +46,6 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.txtOutput = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.cbFeet = new System.Windows.Forms.CheckBox();
-            this.cbDisslv = new System.Windows.Forms.CheckBox();
-            this.rIDField = new System.Windows.Forms.ComboBox();
-            this.label10 = new System.Windows.Forms.Label();
             this.btIdentifyCurveAreas = new System.Windows.Forms.Button();
             this.cbInputLayerIsCurve = new System.Windows.Forms.CheckBox();
             this.cbExportSeg = new System.Windows.Forms.CheckBox();
@@ -68,7 +65,11 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
+            this.rIDField = new System.Windows.Forms.ComboBox();
+            this.cbFeet = new System.Windows.Forms.CheckBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.angleSpinner = new System.Windows.Forms.NumericUpDown();
+            this.cbDisslv = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -85,7 +86,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 23);
+            this.label1.Location = new System.Drawing.Point(27, 27);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(84, 13);
             this.label1.TabIndex = 0;
@@ -95,9 +96,9 @@
             // 
             this.cbLayers.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbLayers.FormattingEnabled = true;
-            this.cbLayers.Location = new System.Drawing.Point(102, 20);
+            this.cbLayers.Location = new System.Drawing.Point(117, 24);
             this.cbLayers.Name = "cbLayers";
-            this.cbLayers.Size = new System.Drawing.Size(617, 21);
+            this.cbLayers.Size = new System.Drawing.Size(198, 21);
             this.cbLayers.TabIndex = 1;
             this.cbLayers.SelectedIndexChanged += new System.EventHandler(this.cbLayers_SelectedIndexChanged);
             // 
@@ -202,10 +203,6 @@
             // 
             this.groupBox2.Controls.Add(this.txtOutput);
             this.groupBox2.Controls.Add(this.label8);
-            this.groupBox2.Controls.Add(this.cbFeet);
-            this.groupBox2.Controls.Add(this.cbDisslv);
-            this.groupBox2.Controls.Add(this.rIDField);
-            this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.btIdentifyCurveAreas);
             this.groupBox2.Controls.Add(this.cbInputLayerIsCurve);
             this.groupBox2.Controls.Add(this.cbExportSeg);
@@ -215,74 +212,33 @@
             this.groupBox2.Controls.Add(this.groupBox3);
             this.groupBox2.Location = new System.Drawing.Point(8, 11);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(738, 769);
+            this.groupBox2.Size = new System.Drawing.Size(738, 806);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Query";
             // 
             // txtOutput
             // 
-            this.txtOutput.Location = new System.Drawing.Point(65, 209);
+            this.txtOutput.Location = new System.Drawing.Point(65, 207);
             this.txtOutput.Name = "txtOutput";
             this.txtOutput.ReadOnly = true;
-            this.txtOutput.Size = new System.Drawing.Size(483, 20);
+            this.txtOutput.Size = new System.Drawing.Size(654, 20);
             this.txtOutput.TabIndex = 20;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(16, 209);
+            this.label8.Location = new System.Drawing.Point(16, 208);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(42, 13);
             this.label8.TabIndex = 19;
             this.label8.Text = "Output:";
             // 
-            // cbFeet
-            // 
-            this.cbFeet.AutoCheck = false;
-            this.cbFeet.AutoSize = true;
-            this.cbFeet.Location = new System.Drawing.Point(136, 100);
-            this.cbFeet.Name = "cbFeet";
-            this.cbFeet.Size = new System.Drawing.Size(103, 17);
-            this.cbFeet.TabIndex = 18;
-            this.cbFeet.Text = "Map Unit is Feet";
-            this.cbFeet.UseVisualStyleBackColor = true;
-            // 
-            // cbDisslv
-            // 
-            this.cbDisslv.AutoSize = true;
-            this.cbDisslv.Location = new System.Drawing.Point(15, 100);
-            this.cbDisslv.Name = "cbDisslv";
-            this.cbDisslv.Size = new System.Drawing.Size(112, 17);
-            this.cbDisslv.TabIndex = 7;
-            this.cbDisslv.Text = "Dissolved   Roads";
-            this.cbDisslv.UseVisualStyleBackColor = true;
-            this.cbDisslv.CheckedChanged += new System.EventHandler(this.cbDisslv_CheckedChanged);
-            // 
-            // rIDField
-            // 
-            this.rIDField.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.rIDField.FormattingEnabled = true;
-            this.rIDField.Location = new System.Drawing.Point(158, 57);
-            this.rIDField.Name = "rIDField";
-            this.rIDField.Size = new System.Drawing.Size(254, 21);
-            this.rIDField.TabIndex = 17;
-            this.rIDField.SelectedIndexChanged += new System.EventHandler(this.rIDField_SelectedIndexChanged);
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(13, 60);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(111, 13);
-            this.label10.TabIndex = 16;
-            this.label10.Text = "Select Road ID Field :";
-            // 
             // btIdentifyCurveAreas
             // 
             this.btIdentifyCurveAreas.Enabled = false;
             this.btIdentifyCurveAreas.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btIdentifyCurveAreas.Location = new System.Drawing.Point(635, 75);
+            this.btIdentifyCurveAreas.Location = new System.Drawing.Point(457, 101);
             this.btIdentifyCurveAreas.Name = "btIdentifyCurveAreas";
             this.btIdentifyCurveAreas.Size = new System.Drawing.Size(84, 42);
             this.btIdentifyCurveAreas.TabIndex = 2;
@@ -513,10 +469,14 @@
             // 
             this.groupBox3.Controls.Add(this.label11);
             this.groupBox3.Controls.Add(this.label15);
+            this.groupBox3.Controls.Add(this.rIDField);
+            this.groupBox3.Controls.Add(this.cbFeet);
+            this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.angleSpinner);
-            this.groupBox3.Location = new System.Drawing.Point(15, 135);
+            this.groupBox3.Controls.Add(this.cbDisslv);
+            this.groupBox3.Location = new System.Drawing.Point(16, 57);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(704, 67);
+            this.groupBox3.Size = new System.Drawing.Size(411, 133);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Configuration";
@@ -524,7 +484,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(24, 31);
+            this.label11.Location = new System.Drawing.Point(23, 100);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(126, 13);
             this.label11.TabIndex = 5;
@@ -533,21 +493,51 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(539, 34);
+            this.label15.Location = new System.Drawing.Point(240, 99);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(40, 13);
+            this.label15.Size = new System.Drawing.Size(45, 13);
             this.label15.TabIndex = 3;
-            this.label15.Text = "degree";
+            this.label15.Text = "degrees";
+            // 
+            // rIDField
+            // 
+            this.rIDField.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.rIDField.FormattingEnabled = true;
+            this.rIDField.Location = new System.Drawing.Point(164, 22);
+            this.rIDField.Name = "rIDField";
+            this.rIDField.Size = new System.Drawing.Size(171, 21);
+            this.rIDField.TabIndex = 17;
+            this.rIDField.SelectedIndexChanged += new System.EventHandler(this.rIDField_SelectedIndexChanged);
+            // 
+            // cbFeet
+            // 
+            this.cbFeet.AutoCheck = false;
+            this.cbFeet.AutoSize = true;
+            this.cbFeet.Location = new System.Drawing.Point(144, 59);
+            this.cbFeet.Name = "cbFeet";
+            this.cbFeet.Size = new System.Drawing.Size(103, 17);
+            this.cbFeet.TabIndex = 18;
+            this.cbFeet.Text = "Map Unit is Feet";
+            this.cbFeet.UseVisualStyleBackColor = true;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(19, 25);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(111, 13);
+            this.label10.TabIndex = 16;
+            this.label10.Text = "Select Road ID Field :";
             // 
             // angleSpinner
             // 
-            this.angleSpinner.DecimalPlaces = 2;
+            this.angleSpinner.DecimalPlaces = 1;
             this.angleSpinner.Increment = new decimal(new int[] {
             1,
             0,
             0,
             65536});
-            this.angleSpinner.Location = new System.Drawing.Point(413, 32);
+            this.angleSpinner.Location = new System.Drawing.Point(165, 97);
             this.angleSpinner.Maximum = new decimal(new int[] {
             10,
             0,
@@ -559,7 +549,7 @@
             0,
             65536});
             this.angleSpinner.Name = "angleSpinner";
-            this.angleSpinner.Size = new System.Drawing.Size(120, 20);
+            this.angleSpinner.Size = new System.Drawing.Size(68, 20);
             this.angleSpinner.TabIndex = 4;
             this.angleSpinner.Value = new decimal(new int[] {
             1,
@@ -568,15 +558,27 @@
             0});
             this.angleSpinner.ValueChanged += new System.EventHandler(this.angleSpinner_ValueChanged);
             // 
-            // DlgCurveFinderQuery
+            // cbDisslv
+            // 
+            this.cbDisslv.AutoSize = true;
+            this.cbDisslv.Location = new System.Drawing.Point(23, 59);
+            this.cbDisslv.Name = "cbDisslv";
+            this.cbDisslv.Size = new System.Drawing.Size(112, 17);
+            this.cbDisslv.TabIndex = 7;
+            this.cbDisslv.Text = "Dissolved   Roads";
+            this.cbDisslv.UseVisualStyleBackColor = true;
+            this.cbDisslv.CheckedChanged += new System.EventHandler(this.cbDisslv_CheckedChanged);
+            // 
+            // AddInForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(745, 249);
+            this.ClientSize = new System.Drawing.Size(745, 262);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "DlgCurveFinderQuery";
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "AddInForm";
             this.Text = "Find Horizontal Curves";
             this.Load += new System.EventHandler(this.DlgCurveFinderQuery_Load);
             this.groupBox1.ResumeLayout(false);

@@ -17,7 +17,7 @@ namespace FormUI
             ClassLib.LicenseInit.InitializeLicence();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new ClassLib.forms.StandAloneForm());
         }
     }
 }

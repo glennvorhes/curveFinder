@@ -60,6 +60,14 @@
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
+    <Reference Include="ESRI.ArcGIS.Catalog, Version=10.2.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="ESRI.ArcGIS.CatalogUI, Version=10.2.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
     <Reference Include="ESRI.ArcGIS.DataSourcesFile, Version=10.2.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>False</EmbedInteropTypes>
@@ -97,6 +105,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -112,6 +122,18 @@
     <Compile Include="curves\CurveCollection.cs" />
     <Compile Include="enums.cs" />
     <Compile Include="Fields.cs" />
+    <Compile Include="forms\AddInForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\AddInForm.Designer.cs">
+      <DependentUpon>AddInForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\StandAloneForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\StandAloneForm.Designer.cs">
+      <DependentUpon>StandAloneForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Helpers.cs" />
     <Compile Include="IdentifyCurves.cs" />
     <Compile Include="LicenseInit.cs" />
@@ -139,6 +161,20 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="CHorztlCurveElf.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="forms\HorztlCurve.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="forms\AddInForm.resx">
+      <DependentUpon>AddInForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\StandAloneForm.resx">
+      <DependentUpon>StandAloneForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
