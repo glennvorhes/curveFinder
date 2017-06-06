@@ -1508,7 +1508,16 @@ namespace ClassLib
             //Build curve area features.
             foreach (ClassLib.segment.CIOWACurve pIowaCurve in allCurveinthePoly)
             {
-                ESRI.ArcGIS.Geodatabase.IFeature feature = pCurveAreaFC.CreateFeature();
+                ESRI.ArcGIS.Geodatabase.IFeature feature;
+                try
+                {
+                    feature = pCurveAreaFC.CreateFeature();
+                }
+                catch (System.Runtime.InteropServices.COMException)
+                {
+                    throw new System.IO.IOException("Error writing to output, probably due to a lock");
+                }
+
                 feature.Shape = pIowaCurve.m_pCurve;
 
                 if (!this.isDissolved)

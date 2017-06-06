@@ -137,6 +137,7 @@
     <Compile Include="Helpers.cs" />
     <Compile Include="IdentifyCurves.cs" />
     <Compile Include="LicenseInit.cs" />
+    <Compile Include="ParseCommandLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Run.cs" />
     <Compile Include="segment\CIOWACurve.cs" />

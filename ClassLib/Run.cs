@@ -31,7 +31,7 @@ namespace ClassLib
         {
             this.isDissolved = isDissolved;
             this.angle = angle;
-            this._roadNameField = roadNameField;
+            this._roadNameField = roadNameField == null ? Fields.NO_HIGHWAY : roadNameField;
         }
 
         /// <summary>
@@ -41,6 +41,7 @@ namespace ClassLib
         /// <param name="angle">threshold angle for curve identification, as double</param>
         /// <param name="roadNameField">field name used to identify the road</param>
         /// <param name="isDissolved">if the features are dissolved on highway name</param>
+        /// <exception cref="System.IO.FileNotFoundException">Thrown when input not found</exception>
         public Run(string inputPath, double angle = 1.0, string roadNameField = Fields.NO_HIGHWAY, bool isDissolved = true) :
             this(isDissolved, angle, roadNameField)
         {
@@ -48,6 +49,7 @@ namespace ClassLib
             this._isShapefile = (new System.Text.RegularExpressions.Regex(".shp$")).IsMatch(this.inputPath);
             this._fClass = Workspace.getFeatureClass(inputPath);
             this._outputPath = Helpers.makeOutputPath(this._inputPath, this._angle);
+            
         }
 
         /// <summary>
@@ -57,6 +59,7 @@ namespace ClassLib
         /// <param name="angle">threshold angle for curve identification, as decimal</param>
         /// <param name="roadNameField">field name used to identify the road</param>
         /// <param name="isDissolved">if the features are dissolved on highway name</param>
+        /// <exception cref="System.IO.FileNotFoundException">Thrown when input not found</exception>
         public Run(string inputPath, decimal angle = 1.0M, string roadNameField = Fields.NO_HIGHWAY, bool isDissolved = true) :
             this(inputPath, (double)angle, roadNameField, isDissolved) { }
 
@@ -67,6 +70,7 @@ namespace ClassLib
         /// <param name="angle">threshold angle for curve identification, as double</param>
         /// <param name="roadNameField">field name used to identify the road</param>
         /// <param name="isDissolved">if the features are dissolved on highway name</param>
+        /// <exception cref="System.IO.FileNotFoundException">Thrown when input not found</exception>
         public Run(IFeatureClass fClass, double angle = 1.0, string roadNameField = Fields.NO_HIGHWAY, bool isDissolved = true)
             : this(isDissolved, angle, roadNameField)
         {
@@ -94,6 +98,7 @@ namespace ClassLib
         /// <param name="angle">threshold angle for curve identification, as decimal</param>
         /// <param name="roadNameField">field name used to identify the road</param>
         /// <param name="isDissolved">if the features are dissolved on highway name</param>
+        /// <exception cref="System.IO.FileNotFoundException">Thrown when input not found</exception>
         public Run(IFeatureClass fClass, decimal angle = 1.0M, string roadNameField = Fields.NO_HIGHWAY, bool isDissolved = true) :
             this(fClass, (double)angle, roadNameField, isDissolved) { }
 

@@ -81,7 +81,7 @@ namespace ClassLib
             return fields;
         }
 
-        public static ESRI.ArcGIS.Geodatabase.IFeatureWorkspace getWorkspace(string fPath)
+        private static ESRI.ArcGIS.Geodatabase.IFeatureWorkspace getWorkspace(string fPath)
         {
             fPath = fPath.Trim();
 

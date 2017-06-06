@@ -66,6 +66,7 @@
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitIdCurves.cs" />
+    <Compile Include="TestParseCommands.cs" />
     <Compile Include="UnitTestRun.cs" />
     <Compile Include="UnitTestWorkspace.cs" />
   </ItemGroup>
