@@ -1,1 +1,0 @@
-<Playlist Version="1.0"><Add Test="UnitTestProject1.TestParseCommands.ParseCom" /><Add Test="UnitTestProject1.TestParseCommands.IsHelp" /><Add Test="UnitTestProject1.TestParseCommands.GenHelp" /></Playlist>
