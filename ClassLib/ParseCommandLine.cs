@@ -17,6 +17,7 @@ namespace ClassLib
         static string[] _dis = new string[] { "-u", "--undissolved", "Assumes geometries are dissolved by roadway\nUse this flag if this is not the case\ndefault: true" };
         static string[] _field = new string[] { "-f", "--field", "Field in the input that identifies the road\nor highway name\ndefault: feature fid or objectid", "text" };
         static string[] _multi = new string[] { "-m", "--multi", "Multiple runs with angles from 0.5 to 1.5\nAny provided angle parmaeter disregared\ndefault: false" };
+        static string[] _rel = new string[] { "-o", "--out", "The path or filegdb for outputs\nDefaults to same directory as the input\ndefault: none" };
 
         public static string helpMessage = makeHelp();
 
@@ -113,7 +114,7 @@ namespace ClassLib
         /// <param name="multi"></param>
         /// <exception cref="System.IndexOutOfRangeException">Thrown when trying to get a non existing parameter after a flag</exception>
         /// <exception cref="System.ArgumentException">Thrown when is help or hwy field not found</exception>
-        public static void parseCommand(string[] args, out IFeatureClass featureClass, out string roadField, out double angle, out bool isDissolved, out bool multi)
+        public static void parseCommand(string[] args, out IFeatureClass featureClass, out string roadField, out double angle, out bool isDissolved, out bool multi, out string outWksp)
         {
             if (isHelp(args))
             {
@@ -124,6 +125,7 @@ namespace ClassLib
             isDissolved = true;
             angle = defaultAngle;
             multi = false;
+            outWksp = null;
 
             featureClass = Workspace.getFeatureClass(args[args.Length - 1]);
 
@@ -168,6 +170,11 @@ namespace ClassLib
                     }
                 }
 
+                if (args[i].ToLower() == _rel[0] || args[i].ToLower() == _rel[1])
+                {
+                    outWksp = getParam(args, i, "output directory / workspace");
+                }
+
                 if (args[i].ToLower() == _dis[0] || args[i].ToLower() == _dis[1])
                 {
                     isDissolved = false;
@@ -196,7 +203,10 @@ namespace ClassLib
             helpMessage += genHelpParam(_angle);
             helpMessage += genHelpParam(_field);
             helpMessage += genHelpParam(_dis);
-            helpMessage += genHelpParam(_multi);          
+            helpMessage += genHelpParam(_multi);
+            helpMessage += genHelpParam(_rel);  
+
+
 
             return helpMessage;
         }

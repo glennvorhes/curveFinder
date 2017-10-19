@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
 using ESRI.ArcGIS.Geodatabase;
+using System.IO;
 
 namespace UnitTestProject1
 {
@@ -26,6 +27,12 @@ namespace UnitTestProject1
             fc = ClassLib.Workspace.getFeatureClass(samplePaths.fdsBuffaloFeet);
         }
 
+        private string makeOutputPath(string inp, string extra)
+        {
+            return Path.GetDirectoryName(inp) + "\\" + extra;
+
+        }
+
 
         [TestMethod]
         public void createOutputFeatureClass()
@@ -35,19 +42,37 @@ namespace UnitTestProject1
 
             fc = ClassLib.Workspace.getFeatureClass(samplePaths.shpBuffaloFeet);
 
-            outF = ClassLib.Workspace.CreateOutputFc(fc, testOutput + "_dis.shp", true);
-            Assert.IsTrue(System.IO.File.Exists(samplePaths.makePath(testOutput + "_dis.shp")));
+            string output;
 
-            outF = ClassLib.Workspace.CreateOutputFc(fc, testOutput + "_no_dis.shp", false);
-            Assert.IsTrue(System.IO.File.Exists(samplePaths.makePath(testOutput + "_no_dis.shp")));
+            IFeatureClass fc2;
 
-            fc = ClassLib.Workspace.getFeatureClass(samplePaths.gdbBuffaloFeet);
-            outF = ClassLib.Workspace.CreateOutputFc(fc, testOutput + "_dis", true);
-            outF = ClassLib.Workspace.CreateOutputFc(fc, testOutput + "_no_dis", false);
-            
-            fc = ClassLib.Workspace.getFeatureClass(samplePaths.fdsBuffaloFeet);
-            outF = ClassLib.Workspace.CreateOutputFc(fc, testOutput + "_dis_fds", true);
-            outF = ClassLib.Workspace.CreateOutputFc(fc, testOutput + "_no_dis_fds", false);
+            output = makeOutputPath(samplePaths.shpBuffaloFeet, testOutput + "_dis.shp");
+            fc2 = ClassLib.Workspace.CreateOutputFc(output, fc, true);
+            Assert.IsTrue(System.IO.File.Exists(output));
+
+            output = makeOutputPath(samplePaths.shpBuffaloFeet, testOutput + "_no_dis.shp");
+            fc2 = ClassLib.Workspace.CreateOutputFc(output, fc, false);
+            Assert.IsTrue(System.IO.File.Exists(output));
+
+            output = makeOutputPath(samplePaths.gdbBuffaloFeet, testOutput + "_dis_gdb");
+            fc2 = ClassLib.Workspace.CreateOutputFc(output, fc, true);
+
+            output = makeOutputPath(samplePaths.gdbBuffaloFeet, testOutput + "_no_dis_gdb");
+            fc2 = ClassLib.Workspace.CreateOutputFc(output, fc, false);
+
+            output = makeOutputPath(samplePaths.fdsBuffaloFeet, testOutput + "_dis_fds_bf");
+            fc2 = ClassLib.Workspace.CreateOutputFc(output, fc, true);
+
+            output = makeOutputPath(samplePaths.fdsBuffaloFeet, testOutput + "_no_dis_fds_bf");
+            fc2 = ClassLib.Workspace.CreateOutputFc(output, fc, false);
+
+            output = makeOutputPath(samplePaths.fdsBuffaloMeters, testOutput + "_dis_fds_bm");
+            fc2 = ClassLib.Workspace.CreateOutputFc(output, fc, true);
+
+            output = makeOutputPath(samplePaths.fdsBuffaloMeters, testOutput + "_no_dis_fds_bm");
+            fc2 = ClassLib.Workspace.CreateOutputFc(output, fc, false);
+
+
         }
     }
 }

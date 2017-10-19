@@ -25,24 +25,27 @@ namespace CurveCommandLine
             double angle;
             bool isDissolved;
             bool multi;
+            string outWksp;
 
             try
             {
-                ClassLib.ParseCommandLine.parseCommand(args, out fc, out roadField, out angle, out isDissolved, out multi);
+                ClassLib.ParseCommandLine.parseCommand(args, out fc, out roadField, out angle, out isDissolved, out multi, out outWksp);
 
                 if (multi)
                 {
                     for (double a = 0.5; a <= 1.6; a += 0.1)
                     {
                         Console.WriteLine("Running angle {0}", a);
-                        ClassLib.Run run = new ClassLib.Run(fc, a, roadField, isDissolved);
+                        ClassLib.Run run = new ClassLib.Run(fc, a, roadField, isDissolved, outWksp);
                         run.go();
+                        Console.WriteLine("Output to: {0}", run.outputPath);
                     }
                 }
                 else
                 {
-                    ClassLib.Run run = new ClassLib.Run(fc, angle, roadField, isDissolved);
+                    ClassLib.Run run = new ClassLib.Run(fc, angle, roadField, isDissolved, outWksp);
                     run.go();
+                    Console.WriteLine("Output to: {0}", run.outputPath);
                 }
                 Console.WriteLine("Finished Sucessfully");
             }

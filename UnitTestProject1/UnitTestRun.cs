@@ -40,6 +40,7 @@ namespace UnitTestProject1
         {
 
             Run r;
+            Debug.WriteLine(samplePaths.shpBuffaloFeet);
             r = new Run(samplePaths.shpBuffaloFeet, angle: 1.0);
             Assert.IsTrue(r.isFeet);
             r = new Run(samplePaths.shpBuffaloMeters, angle: 1.0);
@@ -73,6 +74,18 @@ namespace UnitTestProject1
 
             run = new Run(samplePaths.gdbBuffaloMeters, ang, theField);
             run.go();
+        }
+
+        [TestMethod]
+        public void TestRelPath()
+        {
+            double ang = 0.9;
+            string theField = "fullname";
+            Run run;
+            run = new Run(samplePaths.shpBuffaloMeters, ang, theField, outWksp: samplePaths.testOutputGdb);
+            run.go();
+            Debug.WriteLine(run.outputPath);
+
         }
 
         [TestMethod]
@@ -191,6 +204,18 @@ namespace UnitTestProject1
             }
 
             Assert.IsTrue(exThrown);
+        }
+
+        [TestMethod]
+        public void TestOutputProvided()
+        {
+            System.Console.WriteLine(samplePaths.shpBuffaloFeet);
+            Run r;
+            r = new Run(
+                samplePaths.shpBuffaloFeet, 
+                System.IO.Path.Combine(samplePaths.samplesDir, "tmp", "test_ " + Guid.NewGuid().ToString() + ".shp"), 
+                angle: 0.4);
+            r.go();
         }
     }
 }

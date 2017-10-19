@@ -30,7 +30,17 @@ namespace ClassLib.segment
         public double Length;
         public double Radius;
         public bool hasTransition = false;
+
         public ESRI.ArcGIS.Geometry.ICurve m_pCurve = null;
+        public int numVertices;
+
+
+        public CIOWACurve()
+        {
+            this.numVertices = 0;
+        }
 
     }
+
+
 }

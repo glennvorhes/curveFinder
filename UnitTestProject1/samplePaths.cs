@@ -8,6 +8,8 @@ namespace UnitTestProject1
 {
     public static class samplePaths
     {
+        public static string samplesDir = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), @"..\..\samples");
+
         public static string sampleGdb = "BuffaloCountyRoads.gdb";
 
         public static string shpBuffaloFeet = makePath("BuffaloRoads_feet");
@@ -30,6 +32,11 @@ namespace UnitTestProject1
         public static string gdbBadWorkspace = makePath("BuffaloRoads_feet", "silly.gdb");
         public static string fdsBadWorkspace = makePath("fdsBuffaloRoads_feet", sampleGdb, "silly_fds");
 
+
+
+        public static string testOutputGdb = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), @"..\..\samples", "test_out.gdb");
+
+
         public static string makePath(string name, string gdb = null, string fds = null)
         {
             name = name.Trim();
@@ -42,7 +49,6 @@ namespace UnitTestProject1
                 fds = fds.Trim();
             }
 
-            string samplesDir = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(),  @"..\..\samples");
 
             if (gdb == null)
             {

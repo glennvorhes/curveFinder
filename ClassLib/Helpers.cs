@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,25 +14,48 @@ namespace ClassLib
             System.Diagnostics.Debug.WriteLine(msg);
         }
 
-        public static string makeOutputPath(string inputFC, double angle)
+        public static string makeOutputPath(string inputFC, double angle, string outWksp = null)
         {
-            string outputFile = inputFC.Trim();
-            string angText = Math.Round(angle, 2).ToString().Replace(".", "p");
-
-            if (outputFile.Length > 0)
+            inputFC = inputFC.Trim();
+            if (outWksp != null)
             {
-                if (outputFile.EndsWith(".shp"))
-                {
-                    outputFile = outputFile.Replace(".shp", "");
-                    outputFile += "_" + angText + ".shp";
-                }
-                else
-                {
-                    outputFile += "_" + angText;
-                }
+                outWksp = outWksp.Trim();
+            }
+            
+            string outputFileName = Path.GetFileName(inputFC).Replace(".shp", "");
+            string outputWorkspace = Path.GetDirectoryName(inputFC);
+
+            if (outWksp != null)
+            {
+                outputWorkspace = outWksp;
             }
 
-            return outputFile;
+            string angText = Math.Round(angle, 2).ToString();
+
+            if (angText.IndexOf('.') == -1){
+                angText += ".0";
+            }
+
+            angText = "_" + angText.Replace(".", "p");
+
+            outputFileName += angText;
+
+
+            if (outputWorkspace.ToLower().IndexOf(".gdb") > -1)
+            {
+
+            }
+            else
+            {
+                if (!Directory.Exists(outputWorkspace))
+                {
+                    Directory.CreateDirectory(outputWorkspace);
+                }
+
+                outputFileName += ".shp";
+            }
+            
+            return Path.Combine(outputWorkspace, outputFileName);
         }
 
         public static Boolean? isFeetFromFc(ESRI.ArcGIS.Geodatabase.IFeatureClass pFeatureClass)
@@ -60,8 +84,4 @@ namespace ClassLib
             }
         }
     }
-
-    
-
-   
 }

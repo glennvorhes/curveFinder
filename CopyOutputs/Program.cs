@@ -9,6 +9,7 @@ namespace CopyOutputs
     class Program
     {
         static string outputDirectory = @"T:\Projects\CurveFinder\EsriAddIn";
+        static string helperDirectory = @"C:\Users\glenn\PycharmProjects\CurveFinderHelper\bin";
 
         private static List<string> projectAndFiles(string project, string[] files)
         {
@@ -46,14 +47,27 @@ namespace CopyOutputs
                     fileList.AddRange(
                         projectAndFiles("HorizontalCurveFinder", new string[] {"HorizontalCurveFinder.esriAddIn"}));
 
-                    fileList.AddRange(projectAndFiles("FormUI", new string[] { "FormUI.exe", "ClassLib.dll" }));
-                    fileList.AddRange(projectAndFiles("CurveCommandLine", new string[] {"CurveCommandLine.exe"}));
+                    fileList.AddRange(projectAndFiles("FormUI", new string[] { "FormUI.exe" }));
+                    fileList.AddRange(projectAndFiles("CurveCommandLine", new string[] {"CurveCommandLine.exe", "ClassLib.dll"}));
 
                     List<string> errorList = new List<string>();
 
                     foreach (string f in fileList)
                     {
                         string outFile = System.IO.Path.Combine(Program.outputDirectory, System.IO.Path.GetFileName(f));
+                        try
+                        {
+                            System.IO.File.Copy(f, outFile, true);
+                        }
+                        catch (System.IO.IOException er)
+                        {
+                            errorList.Add(er.Message);
+                        }
+                    }
+
+                    foreach (string f in projectAndFiles("CurveCommandLine", new string[] { "CurveCommandLine.exe", "ClassLib.dll" }))
+                    {
+                        string outFile = System.IO.Path.Combine(Program.helperDirectory, System.IO.Path.GetFileName(f));
                         try
                         {
                             System.IO.File.Copy(f, outFile, true);

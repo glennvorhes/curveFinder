@@ -28,6 +28,7 @@ namespace ClassLib
         public const string DEGREE = "DEGREE";
         public const string HAS_TRANS = "HAS_TRANS";
         public const string INTSC_ANGL = "INTSC_ANGL";
+        public const string NUM_VERT = "NUM_VERT";
 
 
         private static IField makeFieldBase(string fieldName)
@@ -94,6 +95,7 @@ namespace ClassLib
             fieldList.Add(makeFieldDouble(DEGREE));
             fieldList.Add(makeFieldText(HAS_TRANS));
             fieldList.Add(makeFieldDouble(INTSC_ANGL));
+            fieldList.Add(makeFieldInteger(NUM_VERT));
 
             return fieldList;
         }

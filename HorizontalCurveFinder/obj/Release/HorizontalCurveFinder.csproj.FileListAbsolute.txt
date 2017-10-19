@@ -14,4 +14,17 @@ C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General
 C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\obj\Release\HorizontalCurveFinder.csprojResolveAssemblyReference.cache
 C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\obj\Release\HorizontalCurveFinder.dll
 C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\obj\Release\HorizontalCurveFinder.pdb
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\bin\Release\ESRI.ArcGIS.Carto.dll
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\bin\Release\ESRI.ArcGIS.Display.dll
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\bin\Release\ESRI.ArcGIS.Geodatabase.dll
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\bin\Release\ESRI.ArcGIS.Geometry.dll
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\bin\Release\ESRI.ArcGIS.NetworkAnalysis.dll
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\bin\Release\ESRI.ArcGIS.Version.dll
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\bin\Release\ESRI.ArcGIS.DataSourcesGDB.dll
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\bin\Release\ESRI.ArcGIS.Carto.xml
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\bin\Release\ESRI.ArcGIS.Display.xml
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\bin\Release\ESRI.ArcGIS.Geodatabase.xml
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\bin\Release\ESRI.ArcGIS.Geometry.xml
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\bin\Release\ESRI.ArcGIS.NetworkAnalysis.xml
+C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\bin\Release\ESRI.ArcGIS.DataSourcesGDB.xml
 C:\Users\glenn\Documents\TOPS\CurveFinder\MultiProcess_Ver_09162013_MIRE_General\HorizontalCurveFinder\bin\Release\HorizontalCurveFinder.esriAddIn

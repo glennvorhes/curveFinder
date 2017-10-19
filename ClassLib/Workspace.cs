@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -165,53 +166,80 @@ namespace ClassLib
             }
         }
 
+
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="inputFc"></param>
         /// <param name="outName"></param>
         /// <param name="isDissolved"></param>
         /// <returns></returns>
-        public static IFeatureClass CreateOutputFc(ESRI.ArcGIS.Geodatabase.IFeatureClass inputFc, string outName, bool isDissolved)
+        public static IFeatureClass CreateOutputFc(string outPath, IFeatureClass inputFc, bool isDissolved)
         {
-            IDataset iDataset = (IDataset)inputFc;
 
-            IWorkspace2 ws = (IWorkspace2)iDataset.Workspace;
-            IFeatureDataset featDs = inputFc.FeatureDataset;
+            IFeatureWorkspace fws = getWorkspace(outPath);
 
-            if (featDs == null)
+            //Debug.WriteLine(outPath);
+            //Debug.WriteLine((fws as IWorkspace).PathName);
+            IFeatureClass fc = null;
+
+            string[] pathParts = outPath.Split('\\');
+            string outName = pathParts[pathParts.Length - 1];
+            string featDatasetName = null;
+            IFeatureDataset featDs = null;
+
+            if (pathParts.Length > 3){
+                if (pathParts[pathParts.Length - 3].ToLower().IndexOf(".gdb") > -1){
+                    featDatasetName = pathParts[pathParts.Length - 2];
+                }
+            }
+
+
+            if (featDatasetName == null)
             {
-                IWorkspace2 ws2 = ((IDataset)inputFc).Workspace as IWorkspace2;
+                IWorkspace2 ws2 = fws as IWorkspace2;
 
                 if (ws2.get_NameExists(esriDatasetType.esriDTFeatureClass, outName))
                 {
                     IDataset dsExist = (IDataset)((IFeatureWorkspace)ws2).OpenFeatureClass(outName);
                     deleteFeatureClass(dsExist);
                 }
-            }
-            else
-            {
-                IEnumDataset enumDataset = featDs.Subsets;
-                IDataset ids;
 
-                while ((ids = enumDataset.Next()) != null)
+            } else {
+                IEnumDataset enumFds = (fws as IWorkspace).get_Datasets(esriDatasetType.esriDTFeatureDataset);
+
+                IDataset _fds;
+ 
+                while ((_fds = enumFds.Next()) != null)
                 {
-                    if (ids.Name == outName)
+                    if (_fds.Name == featDatasetName)
                     {
-                        deleteFeatureClass(ids);
+                        featDs = (IFeatureDataset)_fds;
+
+                        IEnumDataset enumFcs = featDs.Subsets;
+
+                        IDataset ids;
+
+                        while ((ids = enumFcs.Next()) != null)
+                        {
+                            if (ids.Name.ToLower() == outName.ToLower())
+                            {
+                                deleteFeatureClass(ids);
+                                break;
+                            }
+                        }
+
                         break;
                     }
                 }
             }
-            
-            IFeatureClass fc;
+
+
             IFields fields = GetCurveAreaFields(outName.IndexOf(".shp") > -1, isDissolved, ((IGeoDataset)inputFc).SpatialReference);
 
             try
             {
                 if (featDs == null)
                 {
-                    IFeatureWorkspace fws = (IFeatureWorkspace)iDataset.Workspace;
                     fc = fws.CreateFeatureClass(outName, fields, ocDesc.InstanceCLSID, ocDesc.ClassExtensionCLSID, esriFeatureType.esriFTSimple, "SHAPE", "");
                 }
                 else
@@ -223,10 +251,13 @@ namespace ClassLib
             {
                 string errorMessage = "Could not create output feature class:\n";
 
-                if (featDs == null){
-                    errorMessage += System.IO.Path.Combine(iDataset.Workspace.PathName, outName) + "\n";
-                } else {
-                    errorMessage += System.IO.Path.Combine(iDataset.Workspace.PathName, featDs.Name, outName) + "\n";
+                if (featDs == null)
+                {
+                    errorMessage += System.IO.Path.Combine((fws as IWorkspace).PathName, outName) + "\n";
+                }
+                else
+                {
+                    errorMessage += System.IO.Path.Combine((fws as IWorkspace).PathName, featDs.Name, outName) + "\n";
                 }
                 errorMessage += ex.Message;
 

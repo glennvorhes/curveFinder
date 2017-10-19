@@ -1017,6 +1017,7 @@ namespace ClassLib
                                 pCurve.ID = indexCurveID++;
                                 pCurve.Type = ClassLib.enums.CurveType.TS;
                                 pCurve.Length = dLenIowaSeg[j - 1];
+                                pCurve.numVertices++;
 
                                 //extract the curve feature
                                 //Get ptFrom and ptTo points
@@ -1306,6 +1307,7 @@ namespace ClassLib
                         //determine curve segments, curve length, central angle and radius
                         pCurve.Length = 0;
                         pCurve.CentralAngle = 0;
+                        pCurve.numVertices = 0;
 
                         //Get ptFrom and ptTo points
                         ESRI.ArcGIS.Geometry.IPoint ptFromOnPoly2 = new ESRI.ArcGIS.Geometry.Point();
@@ -1318,6 +1320,7 @@ namespace ClassLib
                             for (int n = index; n < j; n++)
                             {
                                 pCurve.Length += dLenIowaSeg[n];
+                                pCurve.numVertices++;
                                 pCurve.CentralAngle += dAngleIowaSeg[n];
                                 q++;
                             }
@@ -1345,6 +1348,7 @@ namespace ClassLib
                             for (int n = index + 1; n < j; n++)
                             {
                                 pCurve.Length += dLenIowaSeg[n];
+                                pCurve.numVertices++;
                                 pCurve.CentralAngle += dAngleIowaSeg[n];
                                 q++;
                             }
@@ -1372,6 +1376,7 @@ namespace ClassLib
                             for (int n = index; n < j - 1; n++)
                             {
                                 pCurve.Length += dLenIowaSeg[n];
+                                pCurve.numVertices++;
                                 pCurve.CentralAngle += dAngleIowaSeg[n];
                                 q++;
                             }
@@ -1399,6 +1404,7 @@ namespace ClassLib
                             for (int n = index + 1; n < j - 1; n++)
                             {
                                 pCurve.Length += dLenIowaSeg[n];
+                                pCurve.numVertices++;
                                 pCurve.CentralAngle += dAngleIowaSeg[n];
                                 q++;
                             }
@@ -1498,7 +1504,7 @@ namespace ClassLib
         {
 
             ESRI.ArcGIS.Geodatabase.IFeatureClass pCurveAreaFC = ClassLib.Workspace.CreateOutputFc(
-                this._inFeatClass, Path.GetFileName(outputFullPath), this.isDissolved);
+                outputFullPath, this._inFeatClass, this.isDissolved);
 
             //fill in the feature class
             //Ensure the feature class contains polyline.
@@ -1508,6 +1514,12 @@ namespace ClassLib
             //Build curve area features.
             foreach (ClassLib.segment.CIOWACurve pIowaCurve in allCurveinthePoly)
             {
+
+                if (pIowaCurve.numVertices + 1 < 3)
+                {
+                    continue;
+                }
+
                 ESRI.ArcGIS.Geodatabase.IFeature feature;
                 try
                 {
@@ -1564,6 +1576,7 @@ namespace ClassLib
                 }
 
                 feature.set_Value(pCurveAreaFC.FindField(Fields.CURV_LENG), pIowaCurve.Length);
+                feature.set_Value(pCurveAreaFC.FindField(Fields.NUM_VERT), pIowaCurve.numVertices + 1);
 
                 if (pIowaCurve.Type == ClassLib.enums.CurveType.HAP || pIowaCurve.Type == ClassLib.enums.CurveType.TS)
                 {
